@@ -1,6 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import './App.css';
 import 'font-awesome/css/font-awesome.min.css';
+const accurateInterval = require('accurate-interval');
 
 // Can call with usePreciseTimer(updateTime, 1000, state.isActive);
 const usePreciseTimer = (handler, periodInMilliseconds, activityFlag) => {
@@ -46,11 +47,80 @@ class Timer extends  React.Component {
         this.clockify = this.clockify.bind(this);
         this.timerControl = this.timerControl.bind(this);
         this.beginCountDown = this.beginCountDown.bind(this);
+        this.phaseControl = this.phaseControl.bind(this);
+        this.decrementTimer = this.decrementTimer.bind(this);
+        this.warning = this.warning.bind(this);
+        this.buzzer = this.buzzer.bind(this);
+        this.reset = this.reset.bind(this);
+        this.switchTimer = this.switchTimer.bind(this);
+        this.setBrkLength = this.setBrkLength.bind(this);
+        this.setSeshLength = this.setSeshLength.bind(this);
+        this.lengthControl = this.lengthControl.bind(this);
+    }
+    lengthControl(stateToChange, sign, currentLength, timerType) {
+        if (this.state.timerState == 'running') return;
+        if (this.state.timerType == timerType) {
+            if (sign == "-" && currentLength != 1 ) {
+                this.setState({[stateToChange]: currentLength -1});
+            } else if (sign == "+" && currentLength != 60) {
+                this.setState({[stateToChange]: currentLength + 1});
+            }
+        } else {
+            if (sign == "-" && currentLength != 1) {
+                this.setState({[stateToChange]: currentLength -1,
+                timer: currentLength * 60 - 60});
+            } else if (sign == "+" && currentLength != 60) {
+                this.setState({[stateToChange]: currentLength + 1,
+                timer: currentLength * 60 + 60});
+            }
+        }
     }
     beginCountDown() {
         this.setState({
-            intervalID: usePreciseTimer(initialTime, 10000, state.isActive),
-        }, 1000);
+            intervalID: accurateInterval(() => {
+                this.decrementTimer();
+                this.phasecontrol();
+            }, 1000)
+        })
+    }
+    setBrkLength(e) {
+        this.lengthControl('breakLength', e.currentTarget.value,
+            this.state.breakLength, 'Session');
+    }
+    setSeshLength(e) {
+        this.lengthControl('sessionLength', e.currentTarget.value,
+            this.state.sessionLength, 'Break');
+    }
+    decrementTimer() {
+        this.setState({timer: this.state.timer -1});
+    }
+    phaseControl() {
+        let timer = this.state.timer;
+        this.warning(timer);
+        this.buzzer(timer);
+        if (timer < 0) {
+            this.state.timerType == 'Session' ? (
+                this.state.intervalID && this.state.intervalID.cancel(),
+                    this.beginCountDown(),
+                    this.switchTimer(this.state.breakLength * 60, 'Break')
+            ) : (
+                this.state.intervalID && this.state.intervalID.cancel(),
+                    this.beginCountDown(),
+                    this.switchTimer(this.state.sessionLength * 60, 'Session')
+            );
+        }
+    }
+
+    warning(_timer) {
+        let warn = _timer < 61 ?
+            this.setState({alarmColor: {color: 'blue'}}) :
+            this.setState({alarmColor: {color: 'white'}});
+    }
+
+    buzzer(_timer) {
+        if (_timer === 0) {
+            this.audioBeep.play();
+        }
     }
     
     timerControl() {
@@ -69,6 +139,27 @@ class Timer extends  React.Component {
         seconds = seconds < 10 ? '0' + seconds : seconds;
         minutes = minutes < 10 ? '0' + minutes : minutes;
         return minutes + ':' + seconds;
+    }
+    switchTimer(num, str) {
+        this.setState({
+            timer: num,
+            timerType: str,
+            alarmColor: {color: 'white'}
+        })
+    }
+    reset() {
+        this.setState({
+            breakLength: 5,
+            sessionLength: 25,
+            timerState: 'stopped',
+            timerType: 'Session',
+            timer: 1500,
+            intervalID: '',
+            alarmColor: {color: 'white'}
+        });
+        this.state.intervalID && this.state.intervalID.cancel();
+        this.audioBeep.pause();
+        this.audioBeep.currentTime = 0;
     }
 render() {
     return (
@@ -89,8 +180,9 @@ render() {
             <div id="session-length">
                 Session Length
             </div>
-            <div id="time-label">
+            <div id="time-label" style={this.state.alarmColor}>
                 Timer Label
+                {this.state.timerType}
             </div>
             <div id="time-left">
                 {this.clockify()}
