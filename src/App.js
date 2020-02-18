@@ -1,6 +1,8 @@
+/* eslint-disable no-unused-expressions */
 import React, {useEffect, useRef, useState} from 'react';
 import './App.css';
 import 'font-awesome/css/font-awesome.min.css';
+
 const accurateInterval = require('accurate-interval');
 
 // Can call with usePreciseTimer(updateTime, 1000, state.isActive);
@@ -9,30 +11,30 @@ const usePreciseTimer = (handler, periodInMilliseconds, activityFlag) => {
     const savedCallback = useRef();
     const initialTime = useRef();
 
-useEffect(() => {
-    savedCallback.current = handler;
-}, [handler]);
+    useEffect(() => {
+        savedCallback.current = handler;
+    }, [handler]);
 
-useEffect(() => {
-    if (activityFlag) {
-        initialTime.current = new Date().getTime();
-        const id = setInterval(() => {
-            const currentTime = new Date().getTime();
-            const delay = currentTime - initialTime.current;
-            initialTime.current = currentTime;
-            setTimeDelay(delay / 1000);
-            savedCallback.current(timeDelay);
-        }, periodInMilliseconds);
+    useEffect(() => {
+        if (activityFlag) {
+            initialTime.current = new Date().getTime();
+            const id = setInterval(() => {
+                const currentTime = new Date().getTime();
+                const delay = currentTime - initialTime.current;
+                initialTime.current = currentTime;
+                setTimeDelay(delay / 1000);
+                savedCallback.current(timeDelay);
+            }, periodInMilliseconds);
 
-        return () => {
-            clearInterval(id);
-        };
-    }
-}, [periodInMilliseconds, activityFlag, timeDelay]);
+            return () => {
+                clearInterval(id);
+            };
+        }
+    }, [periodInMilliseconds, activityFlag, timeDelay]);
 };
 
 
-class Timer extends  React.Component {
+class Timer extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -57,49 +59,59 @@ class Timer extends  React.Component {
         this.setSeshLength = this.setSeshLength.bind(this);
         this.lengthControl = this.lengthControl.bind(this);
     }
+
     lengthControl(stateToChange, sign, currentLength, timerType) {
         if (this.state.timerState == 'running') return;
         if (this.state.timerType == timerType) {
-            if (sign == "-" && currentLength != 1 ) {
-                this.setState({[stateToChange]: currentLength -1});
+            if (sign == "-" && currentLength != 1) {
+                this.setState({[stateToChange]: currentLength - 1});
             } else if (sign == "+" && currentLength != 60) {
                 this.setState({[stateToChange]: currentLength + 1});
             }
         } else {
             if (sign == "-" && currentLength != 1) {
-                this.setState({[stateToChange]: currentLength -1,
-                timer: currentLength * 60 - 60});
+                this.setState({
+                    [stateToChange]: currentLength - 1,
+                    timer: currentLength * 60 - 60
+                });
             } else if (sign == "+" && currentLength != 60) {
-                this.setState({[stateToChange]: currentLength + 1,
-                timer: currentLength * 60 + 60});
+                this.setState({
+                    [stateToChange]: currentLength + 1,
+                    timer: currentLength * 60 + 60
+                });
             }
         }
     }
+
     beginCountDown() {
         this.setState({
             intervalID: accurateInterval(() => {
                 this.decrementTimer();
-                this.phasecontrol();
+                this.phaseControl();
             }, 1000)
         })
     }
+
     setBrkLength(e) {
         this.lengthControl('breakLength', e.currentTarget.value,
             this.state.breakLength, 'Session');
     }
+
     setSeshLength(e) {
         this.lengthControl('sessionLength', e.currentTarget.value,
             this.state.sessionLength, 'Break');
     }
+
     decrementTimer() {
-        this.setState({timer: this.state.timer -1});
+        this.setState({timer: this.state.timer - 1});
     }
+
     phaseControl() {
         let timer = this.state.timer;
         this.warning(timer);
         this.buzzer(timer);
         if (timer < 0) {
-            this.state.timerType == 'Session' ? (
+            this.state.timerType === 'Session' ? (
                 this.state.intervalID && this.state.intervalID.cancel(),
                     this.beginCountDown(),
                     this.switchTimer(this.state.breakLength * 60, 'Break')
@@ -122,24 +134,25 @@ class Timer extends  React.Component {
             this.audioBeep.play();
         }
     }
-    
+
     timerControl() {
-        let control = this.state.timerState == 'stopped' ? (
+        let control = this.state.timerState === 'stopped' ? (
             this.beginCountDown(),
                 this.setState({timerState: 'running'})
         ) : (
             this.setState({timerSTate: 'stopped'}),
-                this.state.intervalID && this.state.intervalID.cancel()
+            this.state.intervalID && this.state.intervalID.cancel()
         );
     }
-    
+
     clockify() {
-        let minutes = Math.floor(this.state.timer /60);
+        let minutes = Math.floor(this.state.timer / 60);
         let seconds = this.state.timer - minutes * 60;
         seconds = seconds < 10 ? '0' + seconds : seconds;
         minutes = minutes < 10 ? '0' + minutes : minutes;
         return minutes + ':' + seconds;
     }
+
     switchTimer(num, str) {
         this.setState({
             timer: num,
@@ -147,6 +160,7 @@ class Timer extends  React.Component {
             alarmColor: {color: 'white'}
         })
     }
+
     reset() {
         this.setState({
             breakLength: 5,
@@ -161,56 +175,60 @@ class Timer extends  React.Component {
         this.audioBeep.pause();
         this.audioBeep.currentTime = 0;
     }
-render() {
-    return (
-        <div className="App">
-            <div id ="break-label">
-                <button id="break-decrement"></button>
-                Break Label
-                <button id="break-increment"></button>
-            </div>
-            <div id="session-label">
-                <button id="session-decrement"></button>
-                Session Label
-                <button id="session-increment"></button>
-            </div>
-            <div id="break-length">
-                Break Length
-            </div>
-            <div id="session-length">
-                Session Length
-            </div>
-            <div id="time-label" style={this.state.alarmColor}>
-                Timer Label
-                {this.state.timerType}
-            </div>
-            <div id="time-left">
-                {this.clockify()}
-            </div>
-            <div id="timer-control">
-                Start_stop
-                <button id="start_stop" onClick={this.timerControl}>
-                    <i className="fa fa-play fa-2x"/>
-                    <i className="fa fa-pause fa-2x"/>
-                </button>
-                <button id="reset" onClick={this.reset}>
-                    <i className="fa fa-refresh fa2x"/>
-                </button>
-            </div>
-            <div id="reset">
-                Reset
+
+    render() {
+        return (
+            <div className="App">
+                <div id="break-label">
+                    <button id="break-decrement"/>
+                    Break Label
+                    <button id="break-increment"></button>
+                </div>
+                <div id="session-label">
+                    <button id="session-decrement"></button>
+                    Session Label
+                    <button id="session-increment"></button>
+                </div>
+                <div id="break-length">
+                    Break Length
+                </div>
+                <div id="session-length">
+                    Session Length
+                </div>
+                <div id="time-label" style={this.state.alarmColor}>
+                    Timer Label
+                    {this.state.timerType}
+                </div>
+                <div id="time-left">
+                    {this.clockify()}
+                </div>
+                <div id="timer-control">
+                    Start_stop
+                    <button id="start_stop" onClick={this.timerControl}>
+                        <i className="fa fa-play fa-2x"/>
+                        <i className="fa fa-pause fa-2x"/>
+                    </button>
+                    <button id="reset" onClick={this.reset}>
+                        <i className="fa fa-refresh fa2x"/>
+                    </button>
+                </div>
+                <div id="reset">
+                    Reset
+                </div>
+                <audio id="beep" preload="auto"
+                       src="https://goo.gl/65cBl1"
+                       ref={(audio) => {this.audioBeep = audio;}}/>
+
             </div>
 
-        </div>
-
-    );
-}
+        );
+    }
 }
 
 function App() {
     return (
         <div>
-        <Timer />
+            <Timer/>
         </div>
     );
 }
