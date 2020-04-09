@@ -1,5 +1,26 @@
+@font-face{
+  font-family:'digital-clock';
+  src: local('digital-clock'), url("./assets/fonts/digital-7.ttf");
+}
+
+
 body {
   background: #131513;
   font-size: 20px;
   text-align: center;
+  height: 100vh;
+  width: 100vw;
+}
+
+.App {
+  height: 100vh;
+}
+
+.clock-face {
+  font-family: digital-clock;
+  font-size: 6rem;
+}
+
+#time-left {
+  font-size: 8rem;
 }

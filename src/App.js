@@ -2,6 +2,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import './App.css';
 import 'font-awesome/css/font-awesome.min.css';
+import Clock from 'react-live-clock';
 
 const accurateInterval = require('accurate-interval');
 
@@ -61,20 +62,20 @@ class Timer extends React.Component {
     }
 
     lengthControl(stateToChange, sign, currentLength, timerType) {
-        if (this.state.timerState == 'running') return;
-        if (this.state.timerType == timerType) {
-            if (sign == "-" && currentLength != 1) {
+        if (this.state.timerState === 'running') return;
+        if (this.state.timerType === timerType) {
+            if (sign === "-" && currentLength != 1) {
                 this.setState({[stateToChange]: currentLength - 1});
-            } else if (sign == "+" && currentLength != 60) {
+            } else if (sign === "+" && currentLength != 60) {
                 this.setState({[stateToChange]: currentLength + 1});
             }
         } else {
-            if (sign == "-" && currentLength != 1) {
+            if (sign === "-" && currentLength !== 1) {
                 this.setState({
                     [stateToChange]: currentLength - 1,
                     timer: currentLength * 60 - 60
                 });
-            } else if (sign == "+" && currentLength != 60) {
+            } else if (sign === "+" && currentLength !== 60) {
                 this.setState({
                     [stateToChange]: currentLength + 1,
                     timer: currentLength * 60 + 60
@@ -179,6 +180,7 @@ class Timer extends React.Component {
     render() {
         return (
             <div className="App">
+                <div id="current-time" className="clock-face"><Clock format={'HH:mm:ss'} ticking={true} timezone={'US/Eastern'} /></div>
                 <div id="break-label">
                     <button id="break-decrement"/>
                     Break Label
@@ -196,10 +198,10 @@ class Timer extends React.Component {
                     Session Length
                 </div>
                 <div id="time-label" style={this.state.alarmColor}>
-                    Timer Label
+                    Type:
                     {this.state.timerType}
                 </div>
-                <div id="time-left">
+                <div id="time-left" className="clock-face">
                     {this.clockify()}
                 </div>
                 <div id="timer-control">
@@ -227,9 +229,7 @@ class Timer extends React.Component {
 
 function App() {
     return (
-        <div>
             <Timer/>
-        </div>
     );
 }
 
