@@ -64,9 +64,9 @@ class Timer extends React.Component {
     lengthControl(stateToChange, sign, currentLength, timerType) {
         if (this.state.timerState === 'running') return;
         if (this.state.timerType === timerType) {
-            if (sign === "-" && currentLength != 1) {
+            if (sign === "-" && currentLength !== 1) {
                 this.setState({[stateToChange]: currentLength - 1});
-            } else if (sign === "+" && currentLength != 60) {
+            } else if (sign === "+" && currentLength !== 60) {
                 this.setState({[stateToChange]: currentLength + 1});
             }
         } else {
@@ -181,21 +181,23 @@ class Timer extends React.Component {
         return (
             <div className="App">
                 <div id="current-time" className="clock-face"><Clock format={'HH:mm:ss'} ticking={true} timezone={'US/Eastern'} /></div>
+                <div>
                 <div id="break-label">
-                    <button id="break-decrement"/>
-                    Break Label
-                    <button id="break-increment"></button>
+                    <button id="break-decrement"><i className="fa fa-arrow-down fa-2x"/></button>
+                    Break Length: {this.state.breakLength}
+                    <button id="break-increment"><i className="fa fa-arrow-up fa-2x"/></button>
                 </div>
                 <div id="session-label">
-                    <button id="session-decrement"></button>
-                    Session Label
-                    <button id="session-increment"></button>
+                    <button id="session-decrement"><i className="fa fa-arrow-down fa-2x"/></button>
+                    Session Length: {this.state.sessionLength}
+                    <button id="session-increment"><i className="fa fa-arrow-up fa-2x"/></button>
                 </div>
                 <div id="break-length">
                     Break Length
                 </div>
                 <div id="session-length">
                     Session Length
+                </div>
                 </div>
                 <div id="time-label" style={this.state.alarmColor}>
                     Type:
@@ -205,17 +207,13 @@ class Timer extends React.Component {
                     {this.clockify()}
                 </div>
                 <div id="timer-control">
-                    Start_stop
                     <button id="start_stop" onClick={this.timerControl}>
                         <i className="fa fa-play fa-2x"/>
                         <i className="fa fa-pause fa-2x"/>
                     </button>
-                    <button id="reset" onClick={this.reset}>
-                        <i className="fa fa-refresh fa2x"/>
-                    </button>
-                </div>
-                <div id="reset">
-                    Reset
+                        <button id="reset" onClick={this.reset}>
+                            <i className="fa fa-refresh fa-2x"/>
+                        </button>
                 </div>
                 <audio id="beep" preload="auto"
                        src="https://goo.gl/65cBl1"
