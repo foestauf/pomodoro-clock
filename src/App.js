@@ -137,13 +137,13 @@ class Timer extends React.Component {
     }
 
     timerControl() {
-        let control = this.state.timerState === 'stopped' ? (
-            this.beginCountDown(),
-                this.setState({timerState: 'running'})
-        ) : (
-            this.setState({timerSTate: 'stopped'}),
-            this.state.intervalID && this.state.intervalID.cancel()
-        );
+        if (this.state.timerState === 'stopped') {
+            this.beginCountDown();
+            this.setState({timerState: 'running'})
+        } else {
+            this.setState({timerState: 'stoppped'});
+            this.state.intervalID && this.state.intervalID.clear()
+        }
     }
 
     clockify() {
@@ -172,7 +172,7 @@ class Timer extends React.Component {
             intervalID: '',
             alarmColor: {color: 'white'}
         });
-        this.state.intervalID && this.state.intervalID.cancel();
+        this.state.intervalID && this.state.intervalID.clear();
         this.audioBeep.pause();
         this.audioBeep.currentTime = 0;
     }
