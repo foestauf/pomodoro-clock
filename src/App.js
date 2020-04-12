@@ -141,7 +141,7 @@ class Timer extends React.Component {
             this.beginCountDown();
             this.setState({timerState: 'running'})
         } else {
-            this.setState({timerState: 'stoppped'});
+            this.setState({timerState: 'stopped'});
             this.state.intervalID && this.state.intervalID.clear()
         }
     }
@@ -208,6 +208,7 @@ class Timer extends React.Component {
                 </div>
                 <div id="timer-control">
                     <button id="start_stop" onClick={this.timerControl}>
+
                         <i className="fa fa-play fa-2x"/>
                         <i className="fa fa-pause fa-2x"/>
                     </button>
