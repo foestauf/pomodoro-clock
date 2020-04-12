@@ -34,6 +34,30 @@ const usePreciseTimer = (handler, periodInMilliseconds, activityFlag) => {
     }, [periodInMilliseconds, activityFlag, timeDelay]);
 };
 
+class TimerLengthControl extends React.Component {
+    render() {
+        return (
+            <div className="length-control">
+                <div id={this.props.titleID}>
+                    {this.props.title}
+                </div>
+                <button id={this.props.minID}
+                        className="btn-level" value="-"
+                        onClick={this.props.onClick}>
+                    <i className="fa fa-arrow-down fa-2x"/>
+                </button>
+                <div id={this.props.lengthID} className="btn-level">
+                    {this.props.length}
+                </div>
+                <button id={this.props.addID}
+                        className="btn-level" value="+"
+                        onClick={this.props.onClick}>
+                    <i className="fa fa-arrow-up fa-2x"/>
+                </button>
+            </div>
+        )
+    }
+};
 
 class Timer extends React.Component {
     constructor(props) {
@@ -137,13 +161,13 @@ class Timer extends React.Component {
     }
 
     timerControl() {
-        let control = this.state.timerState === 'stopped' ? (
-            this.beginCountDown(),
-                this.setState({timerState: 'running'})
-        ) : (
-            this.setState({timerSTate: 'stopped'}),
-            this.state.intervalID && this.state.intervalID.cancel()
-        );
+        if (this.state.timerState === 'stopped') {
+            this.beginCountDown();
+            this.setState({timerState: 'running'})
+        } else {
+            this.setState({timerState: 'stopped'});
+            this.state.intervalID && this.state.intervalID.clear()
+        }
     }
 
     clockify() {
@@ -172,7 +196,7 @@ class Timer extends React.Component {
             intervalID: '',
             alarmColor: {color: 'white'}
         });
-        this.state.intervalID && this.state.intervalID.cancel();
+        this.state.intervalID && this.state.intervalID.clear();
         this.audioBeep.pause();
         this.audioBeep.currentTime = 0;
     }
@@ -181,23 +205,17 @@ class Timer extends React.Component {
         return (
             <div className="App">
                 <div id="current-time" className="clock-face"><Clock format={'HH:mm:ss'} ticking={true} timezone={'US/Eastern'} /></div>
-                <div>
                 <div id="break-label">
-                    <button id="break-decrement"><i className="fa fa-arrow-down fa-2x"/></button>
-                    Break Length: {this.state.breakLength}
-                    <button id="break-increment"><i className="fa fa-arrow-up fa-2x"/></button>
-                </div>
-                <div id="session-label">
-                    <button id="session-decrement"><i className="fa fa-arrow-down fa-2x"/></button>
-                    Session Length: {this.state.sessionLength}
-                    <button id="session-increment"><i className="fa fa-arrow-up fa-2x"/></button>
-                </div>
-                <div id="break-length">
-                    Break Length
-                </div>
-                <div id="session-length">
-                    Session Length
-                </div>
+                    <TimerLengthControl
+                        titleID="break-label"   minID="break-decrement"
+                        addID="break-increment" lengthID="break-length"
+                        title="Break Length"    onClick={this.setBrkLength}
+                        length={this.state.breakLength}/>
+                    <TimerLengthControl
+                        titleID="session-label"   minID="session-decrement"
+                        addID="session-increment" lengthID="session-length"
+                        title="Session Length"    onClick={this.setSeshLength}
+                        length={this.state.sessionLength}/>
                 </div>
                 <div id="time-label" style={this.state.alarmColor}>
                     Type:
@@ -208,6 +226,7 @@ class Timer extends React.Component {
                 </div>
                 <div id="timer-control">
                     <button id="start_stop" onClick={this.timerControl}>
+
                         <i className="fa fa-play fa-2x"/>
                         <i className="fa fa-pause fa-2x"/>
                     </button>
