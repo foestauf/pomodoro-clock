@@ -20,3 +20,14 @@ code {
 #root {
   height: 100vh;
 }
+
+#current-time {
+  height: 15%;
+}
+
+#main-display {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 35%;
+}

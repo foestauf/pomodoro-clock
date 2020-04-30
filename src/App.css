@@ -24,3 +24,12 @@ body {
 #time-left {
   font-size: 8rem;
 }
+
+#timer-wrapper {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+}
+#timer-control {
+  align-content: center;
+}

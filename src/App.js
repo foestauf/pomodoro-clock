@@ -41,19 +41,20 @@ class TimerLengthControl extends React.Component {
                 <div id={this.props.titleID}>
                     {this.props.title}
                 </div>
-                <button id={this.props.minID}
-                        className="btn-level" value="-"
-                        onClick={this.props.onClick}>
-                    <i className="fa fa-arrow-down fa-2x"/>
-                </button>
-                <div id={this.props.lengthID} className="btn-level">
-                    {this.props.length}
-                </div>
                 <button id={this.props.addID}
                         className="btn-level" value="+"
                         onClick={this.props.onClick}>
                     <i className="fa fa-arrow-up fa-2x"/>
                 </button>
+                <div id={this.props.lengthID} className="btn-level">
+                    {this.props.length}
+                </div>
+                <button id={this.props.minID}
+                        className="btn-level" value="-"
+                        onClick={this.props.onClick}>
+                    <i className="fa fa-arrow-down fa-2x"/>
+                </button>
+
             </div>
         )
     }
@@ -204,50 +205,54 @@ class Timer extends React.Component {
     render() {
         return (
             <div className="App">
-                <div id="current-time" className="clock-face"><Clock format={'HH:mm:ss'} ticking={true} timezone={'US/Eastern'} /></div>
-                <div id="break-label">
-                    <TimerLengthControl
-                        titleID="break-label"   minID="break-decrement"
-                        addID="break-increment" lengthID="break-length"
-                        title="Break Length"    onClick={this.setBrkLength}
-                        length={this.state.breakLength}/>
-                    <TimerLengthControl
-                        titleID="session-label"   minID="session-decrement"
-                        addID="session-increment" lengthID="session-length"
-                        title="Session Length"    onClick={this.setSeshLength}
-                        length={this.state.sessionLength}/>
-                </div>
-                <div id="time-label" style={this.state.alarmColor}>
-                    Type:
-                    {this.state.timerType}
-                </div>
-                <div id="time-left" className="clock-face">
-                    {this.clockify()}
-                </div>
-                <div id="timer-control">
-                    <button id="start_stop" onClick={this.timerControl}>
+                <div id="current-time" className="clock-face"><Clock format={'HH:mm:ss'} ticking={true}
+                                                                     timezone={'US/Eastern'}/></div>
+                <div id="main-display">
+                    <div id="crunc-supreme-wrapper">
+                    <div id="time-label" style={this.state.alarmColor}>
+                        Type:{' '}
+                        {this.state.timerType}
+                    </div>
 
-                        <i className="fa fa-play fa-2x"/>
-                        <i className="fa fa-pause fa-2x"/>
-                    </button>
+                    <div id="timer-wrapper">
+                        <div id="break-label">
+                            <TimerLengthControl
+                                titleID="break-label" minID="break-decrement"
+                                addID="break-increment" lengthID="break-length"
+                                title="Break Length" onClick={this.setBrkLength}
+                                length={this.state.breakLength}/>
+                        </div>
+                        <div id="time-left" className="clock-face">
+                            {this.clockify()}
+                        </div>
+                        <TimerLengthControl
+                            titleID="session-label" minID="session-decrement"
+                            addID="session-increment" lengthID="session-length"
+                            title="Session Length" onClick={this.setSeshLength}
+                            length={this.state.sessionLength}/>
+
+                        <audio id="beep" preload="auto"
+                               src="https://goo.gl/65cBl1"
+                               ref={(audio) => {
+                                   this.audioBeep = audio;
+                               }}/>
+                    </div>
+                    <div id="timer-control">
+                        <button id="start_stop" onClick={this.timerControl}>
+
+                            <i className="fa fa-play fa-2x"/>
+                            <i className="fa fa-pause fa-2x"/>
+                        </button>
                         <button id="reset" onClick={this.reset}>
                             <i className="fa fa-refresh fa-2x"/>
                         </button>
+                    </div>
                 </div>
-                <audio id="beep" preload="auto"
-                       src="https://goo.gl/65cBl1"
-                       ref={(audio) => {this.audioBeep = audio;}}/>
-
+                </div>
             </div>
 
         );
     }
 }
 
-function App() {
-    return (
-            <Timer/>
-    );
-}
-
-export default App;
+export default Timer;
