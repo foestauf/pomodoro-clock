@@ -138,11 +138,11 @@ class Timer extends React.Component {
         this.buzzer(timer);
         if (timer < 0) {
             this.state.timerType === 'Session' ? (
-                this.state.intervalID && this.state.intervalID.cancel(),
+                this.state.intervalID && this.state.intervalID.clear(),
                     this.beginCountDown(),
                     this.switchTimer(this.state.breakLength * 60, 'Break')
             ) : (
-                this.state.intervalID && this.state.intervalID.cancel(),
+                this.state.intervalID && this.state.intervalID.clear(),
                     this.beginCountDown(),
                     this.switchTimer(this.state.sessionLength * 60, 'Session')
             );
@@ -205,6 +205,7 @@ class Timer extends React.Component {
     render() {
         return (
             <div className="App">
+                <div>Current Time</div>
                 <div id="current-time" className="clock-face"><Clock format={'HH:mm:ss'} ticking={true}
                                                                      timezone={'US/Eastern'}/></div>
                 <div id="main-display">
