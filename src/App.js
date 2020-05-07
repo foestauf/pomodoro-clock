@@ -1,38 +1,10 @@
 /* eslint-disable no-unused-expressions */
-import React, {useEffect, useRef, useState} from 'react';
+import React from 'react';
 import './App.css';
 import 'font-awesome/css/font-awesome.min.css';
 import Clock from 'react-live-clock';
 
 const accurateInterval = require('accurate-interval');
-
-// Can call with usePreciseTimer(updateTime, 1000, state.isActive);
-const usePreciseTimer = (handler, periodInMilliseconds, activityFlag) => {
-    const [timeDelay, setTimeDelay] = useState(1);
-    const savedCallback = useRef();
-    const initialTime = useRef();
-
-    useEffect(() => {
-        savedCallback.current = handler;
-    }, [handler]);
-
-    useEffect(() => {
-        if (activityFlag) {
-            initialTime.current = new Date().getTime();
-            const id = setInterval(() => {
-                const currentTime = new Date().getTime();
-                const delay = currentTime - initialTime.current;
-                initialTime.current = currentTime;
-                setTimeDelay(delay / 1000);
-                savedCallback.current(timeDelay);
-            }, periodInMilliseconds);
-
-            return () => {
-                clearInterval(id);
-            };
-        }
-    }, [periodInMilliseconds, activityFlag, timeDelay]);
-};
 
 class TimerLengthControl extends React.Component {
     render() {
@@ -210,45 +182,45 @@ class Timer extends React.Component {
                                                                      timezone={'US/Eastern'}/></div>
                 <div id="main-display">
                     <div id="crunc-supreme-wrapper">
-                    <div id="time-label" style={this.state.alarmColor}>
-                        Type:{' '}
-                        {this.state.timerType}
-                    </div>
+                        <div id="time-label" style={this.state.alarmColor}>
+                            Type:{' '}
+                            {this.state.timerType}
+                        </div>
 
-                    <div id="timer-wrapper">
-                        <div id="break-label">
+                        <div id="timer-wrapper">
+                            <div id="break-label">
+                                <TimerLengthControl
+                                    titleID="break-label" minID="break-decrement"
+                                    addID="break-increment" lengthID="break-length"
+                                    title="Break Length" onClick={this.setBrkLength}
+                                    length={this.state.breakLength}/>
+                            </div>
+                            <div id="time-left" className="clock-face">
+                                {this.clockify()}
+                            </div>
                             <TimerLengthControl
-                                titleID="break-label" minID="break-decrement"
-                                addID="break-increment" lengthID="break-length"
-                                title="Break Length" onClick={this.setBrkLength}
-                                length={this.state.breakLength}/>
-                        </div>
-                        <div id="time-left" className="clock-face">
-                            {this.clockify()}
-                        </div>
-                        <TimerLengthControl
-                            titleID="session-label" minID="session-decrement"
-                            addID="session-increment" lengthID="session-length"
-                            title="Session Length" onClick={this.setSeshLength}
-                            length={this.state.sessionLength}/>
+                                titleID="session-label" minID="session-decrement"
+                                addID="session-increment" lengthID="session-length"
+                                title="Session Length" onClick={this.setSeshLength}
+                                length={this.state.sessionLength}/>
 
-                        <audio id="beep" preload="auto"
-                               src="https://goo.gl/65cBl1"
-                               ref={(audio) => {
-                                   this.audioBeep = audio;
-                               }}/>
-                    </div>
-                    <div id="timer-control">
-                        <button id="start_stop" onClick={this.timerControl}>
+                            <audio id="beep" preload="auto"
+                                   src="https://goo.gl/65cBl1"
+                                   ref={(audio) => {
+                                       this.audioBeep = audio;
+                                   }}/>
+                        </div>
+                        <div id="timer-control">
+                            <button id="start_stop" onClick={this.timerControl}>
 
-                            <i className="fa fa-play fa-2x"/>
-                            <i className="fa fa-pause fa-2x"/>
-                        </button>
-                        <button id="reset" onClick={this.reset}>
-                            <i className="fa fa-refresh fa-2x"/>
-                        </button>
+                                <i className="fa fa-play fa-2x"/>
+                                <i className="fa fa-pause fa-2x"/>
+                            </button>
+                            <button id="reset" onClick={this.reset}>
+                                <i className="fa fa-refresh fa-2x"/>
+                            </button>
+                        </div>
                     </div>
-                </div>
                 </div>
             </div>
 
