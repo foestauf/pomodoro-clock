@@ -26,7 +26,7 @@
   "eslintConfig": {
     "extends": "react-app"
   },
-  "homepage" : "http://foestauf.me/pomodoro-clock",
+  "homepage" : "http://foestauf.me/Pomodoro-clock/",
   "browserslist": {
     "production": [
       ">0.2%",
