@@ -1,38 +1,11 @@
 /* eslint-disable no-unused-expressions */
-import React, {useEffect, useRef, useState} from 'react';
+import React from 'react';
 import './App.css';
 import 'font-awesome/css/font-awesome.min.css';
 import Clock from 'react-live-clock';
 
 const accurateInterval = require('accurate-interval');
 
-// Can call with usePreciseTimer(updateTime, 1000, state.isActive);
-const usePreciseTimer = (handler, periodInMilliseconds, activityFlag) => {
-    const [timeDelay, setTimeDelay] = useState(1);
-    const savedCallback = useRef();
-    const initialTime = useRef();
-
-    useEffect(() => {
-        savedCallback.current = handler;
-    }, [handler]);
-
-    useEffect(() => {
-        if (activityFlag) {
-            initialTime.current = new Date().getTime();
-            const id = setInterval(() => {
-                const currentTime = new Date().getTime();
-                const delay = currentTime - initialTime.current;
-                initialTime.current = currentTime;
-                setTimeDelay(delay / 1000);
-                savedCallback.current(timeDelay);
-            }, periodInMilliseconds);
-
-            return () => {
-                clearInterval(id);
-            };
-        }
-    }, [periodInMilliseconds, activityFlag, timeDelay]);
-};
 
 class TimerLengthControl extends React.Component {
     render() {
@@ -150,7 +123,7 @@ class Timer extends React.Component {
     }
 
     warning(_timer) {
-        let warn = _timer < 61 ?
+        _timer < 61 ?
             this.setState({alarmColor: {color: 'blue'}}) :
             this.setState({alarmColor: {color: 'white'}});
     }
@@ -211,8 +184,9 @@ class Timer extends React.Component {
                 <div id="main-display">
                     <div id="crunc-supreme-wrapper">
                     <div id="time-label" style={this.state.alarmColor}>
-                        Type:{' '}
+                        <h1>
                         {this.state.timerType}
+                        </h1>
                     </div>
 
                     <div id="timer-wrapper">
