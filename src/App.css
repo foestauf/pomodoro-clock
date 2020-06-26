@@ -24,6 +24,11 @@ body {
   color: dimgray;
 }
 
+.timer-button:focus {
+  outline: 0;
+  box-shadow: none!important;
+}
+
 
 .clock-face {
   font-family: digital-clock;
