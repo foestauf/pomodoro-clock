@@ -5,6 +5,8 @@ import 'font-awesome/css/font-awesome.min.css';
 import Clock from 'react-live-clock';
 
 const accurateInterval = require('accurate-interval');
+const pauseIcon = 'fa fa-pause fa-2x'
+const playIcon = 'fa fa-play fa-2x'
 
 class TimerLengthControl extends React.Component {
     render() {
@@ -30,7 +32,7 @@ class TimerLengthControl extends React.Component {
             </div>
         )
     }
-};
+}
 
 class Timer extends React.Component {
     constructor(props) {
@@ -42,7 +44,8 @@ class Timer extends React.Component {
             timerState: 'stopped',
             timerType: 'Session',
             intervalID: '',
-            alarmColor: {color: 'white'}
+            alarmColor: {color: 'white'},
+            startButton: playIcon
         };
         this.clockify = this.clockify.bind(this);
         this.timerControl = this.timerControl.bind(this);
@@ -57,6 +60,7 @@ class Timer extends React.Component {
         this.setSeshLength = this.setSeshLength.bind(this);
         this.lengthControl = this.lengthControl.bind(this);
     }
+
 
     lengthControl(stateToChange, sign, currentLength, timerType) {
         if (this.state.timerState === 'running') return;
@@ -122,7 +126,7 @@ class Timer extends React.Component {
     }
 
     warning(_timer) {
-        let warn = _timer < 61 ?
+        _timer < 61 ?
             this.setState({alarmColor: {color: 'blue'}}) :
             this.setState({alarmColor: {color: 'white'}});
     }
@@ -136,10 +140,12 @@ class Timer extends React.Component {
     timerControl() {
         if (this.state.timerState === 'stopped') {
             this.beginCountDown();
-            this.setState({timerState: 'running'})
+            this.setState({timerState: 'running'});
+            this.setState({startButton: pauseIcon})
         } else {
             this.setState({timerState: 'stopped'});
-            this.state.intervalID && this.state.intervalID.clear()
+            this.state.intervalID && this.state.intervalID.clear();
+            this.setState({startButton: playIcon})
         }
     }
 
@@ -167,7 +173,8 @@ class Timer extends React.Component {
             timerType: 'Session',
             timer: 1500,
             intervalID: '',
-            alarmColor: {color: 'white'}
+            alarmColor: {color: 'white'},
+            startButton: playIcon
         });
         this.state.intervalID && this.state.intervalID.clear();
         this.audioBeep.pause();
@@ -182,45 +189,45 @@ class Timer extends React.Component {
                                                                      timezone={'US/Eastern'}/></div>
                 <div id="main-display">
                     <div id="crunc-supreme-wrapper">
-                        <div id="time-label" style={this.state.alarmColor}>
-                            Type:{' '}
-                            {this.state.timerType}
-                        </div>
-
-                        <div id="timer-wrapper">
-                            <div id="break-label">
-                                <TimerLengthControl
-                                    titleID="break-label" minID="break-decrement"
-                                    addID="break-increment" lengthID="break-length"
-                                    title="Break Length" onClick={this.setBrkLength}
-                                    length={this.state.breakLength}/>
-                            </div>
-                            <div id="time-left" className="clock-face">
-                                {this.clockify()}
-                            </div>
-                            <TimerLengthControl
-                                titleID="session-label" minID="session-decrement"
-                                addID="session-increment" lengthID="session-length"
-                                title="Session Length" onClick={this.setSeshLength}
-                                length={this.state.sessionLength}/>
-
-                            <audio id="beep" preload="auto"
-                                   src="https://goo.gl/65cBl1"
-                                   ref={(audio) => {
-                                       this.audioBeep = audio;
-                                   }}/>
-                        </div>
-                        <div id="timer-control">
-                            <button id="start_stop" onClick={this.timerControl}>
-
-                                <i className="fa fa-play fa-2x"/>
-                                <i className="fa fa-pause fa-2x"/>
-                            </button>
-                            <button id="reset" onClick={this.reset}>
-                                <i className="fa fa-refresh fa-2x"/>
-                            </button>
-                        </div>
+                    <div id="time-label" style={this.state.alarmColor}>
+                        <h1>
+                        {this.state.timerType}
+                        </h1>
                     </div>
+
+                    <div id="timer-wrapper">
+                        <div id="break-label">
+                            <TimerLengthControl
+                                titleID="break-label" minID="break-decrement"
+                                addID="break-increment" lengthID="break-length"
+                                title="Break Length" onClick={this.setBrkLength}
+                                length={this.state.breakLength}/>
+                        </div>
+                        <div id="time-left" className="clock-face">
+                            {this.clockify()}
+                        </div>
+                        <TimerLengthControl
+                            titleID="session-label" minID="session-decrement"
+                            addID="session-increment" lengthID="session-length"
+                            title="Session Length" onClick={this.setSeshLength}
+                            length={this.state.sessionLength}/>
+
+                        <audio id="beep" preload="auto"
+                               src="https://goo.gl/65cBl1"
+                               ref={(audio) => {
+                                   this.audioBeep = audio;
+                               }}/>
+                    </div>
+                    <div id="timer-control">
+                        <button id="start_stop" onClick={this.timerControl}>
+
+                            <i className={this.state.startButton}/>
+                        </button>
+                        <button id="reset" onClick={this.reset}>
+                            <i className="fa fa-refresh fa-2x"/>
+                        </button>
+                    </div>
+                </div>
                 </div>
             </div>
 
