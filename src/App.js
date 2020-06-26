@@ -16,15 +16,15 @@ class TimerLengthControl extends React.Component {
                     {this.props.title}
                 </div>
                 <button id={this.props.addID}
-                        className="btn-level" value="+"
+                        className="btn-level timer-button" value="+"
                         onClick={this.props.onClick}>
-                    <i className="fa fa-arrow-up fa-2x"/>
+                    <i className="fa fa-arrow-up fa-2x timer-button"/>
                 </button>
                 <div id={this.props.lengthID} className="btn-level">
                     {this.props.length}
                 </div>
                 <button id={this.props.minID}
-                        className="btn-level" value="-"
+                        className="btn-level timer-button" value="-"
                         onClick={this.props.onClick}>
                     <i className="fa fa-arrow-down fa-2x"/>
                 </button>
@@ -219,11 +219,11 @@ class Timer extends React.Component {
                                }}/>
                     </div>
                     <div id="timer-control">
-                        <button id="start_stop" onClick={this.timerControl}>
+                        <button id="start_stop" className="timer-button" onClick={this.timerControl}>
 
                             <i className={this.state.startButton}/>
                         </button>
-                        <button id="reset" onClick={this.reset}>
+                        <button id="reset" className="timer-button" onClick={this.reset}>
                             <i className="fa fa-refresh fa-2x"/>
                         </button>
                     </div>

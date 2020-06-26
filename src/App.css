@@ -5,16 +5,25 @@
 
 
 body {
-  background: cornflowerblue;
+  background: #24292e;
   font-size: 20px;
   text-align: center;
   height: 100vh;
   width: 100vw;
+  color: rgb(214, 216, 218);
 }
 
 .App {
   height: 100vh;
 }
+
+.timer-button {
+  background: transparent;
+  border-width: 0px;
+  cursor: pointer;
+  color: dimgray;
+}
+
 
 .clock-face {
   font-family: digital-clock;
