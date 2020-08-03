@@ -1,9 +1,21 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import App from './App';
+import { shallow } from "enzyme";
+import toJson from "enzyme-to-json";
 
-test('renders learn react link', () => {
-  const { getByText } = render(<App />);
-  const linkElement = getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+it('should render without crashing', function () {
+  shallow(<App />);
+});
+
+it('should render correctly', function () {
+  const tree = shallow(<App />);
+  expect(toJson(tree)).toMatchSnapshot();
+
+});
+
+it('should render Account Header', function () {
+  const wrapper = shallow(<App />);
+  const header = <div>Current Time</div>;
+  expect(wrapper.contains(header)).toEqual(true);
 });

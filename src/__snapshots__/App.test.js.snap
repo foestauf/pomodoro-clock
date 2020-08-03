@@ -1,0 +1,104 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should render correctly 1`] = `
+<div
+  className="App"
+>
+  <div>
+    Current Time
+  </div>
+  <div
+    className="clock-face"
+    id="current-time"
+  >
+    <ReactLiveClock
+      date={null}
+      filter={[Function]}
+      format="HH:mm:ss"
+      interval={1000}
+      onChange={[Function]}
+      ticking={true}
+      timezone="US/Eastern"
+    />
+  </div>
+  <div
+    id="main-display"
+  >
+    <div
+      id="crunc-supreme-wrapper"
+    >
+      <div
+        id="time-label"
+        style={
+          Object {
+            "color": "white",
+          }
+        }
+      >
+        <h1>
+          Session
+        </h1>
+      </div>
+      <div
+        id="timer-wrapper"
+      >
+        <div
+          id="break-label"
+        >
+          <TimerLengthControl
+            addID="break-increment"
+            length={5}
+            lengthID="break-length"
+            minID="break-decrement"
+            onClick={[Function]}
+            title="Break Length"
+            titleID="break-label"
+          />
+        </div>
+        <div
+          className="clock-face"
+          id="time-left"
+        >
+          25:00
+        </div>
+        <TimerLengthControl
+          addID="session-increment"
+          length={25}
+          lengthID="session-length"
+          minID="session-decrement"
+          onClick={[Function]}
+          title="Session Length"
+          titleID="session-label"
+        />
+        <audio
+          id="beep"
+          preload="auto"
+          src="https://goo.gl/65cBl1"
+        />
+      </div>
+      <div
+        id="timer-control"
+      >
+        <button
+          className="timer-button"
+          id="start_stop"
+          onClick={[Function]}
+        >
+          <i
+            className="fa fa-play fa-2x"
+          />
+        </button>
+        <button
+          className="timer-button"
+          id="reset"
+          onClick={[Function]}
+        >
+          <i
+            className="fa fa-refresh fa-2x"
+          />
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+`;

@@ -20,13 +20,13 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "react-scripts test --watchAll",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": "react-app"
   },
-  "homepage" : "http://foestauf.me/pomodoro-clock/",
+  "homepage": "http://foestauf.me/pomodoro-clock/",
   "browserslist": {
     "production": [
       ">0.2%",
@@ -38,5 +38,11 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.2",
+    "enzyme-to-json": "^3.5.0",
+    "react-test-renderer": "^16.13.1"
   }
 }
