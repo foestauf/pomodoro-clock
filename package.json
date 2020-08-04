@@ -11,7 +11,7 @@
     "font-awesome": "^4.7.0",
     "react": "^16.12.0",
     "react-bootstrap": "^1.3.0",
-    "react-dom": "^16.12.0",
+    "react-dom": "^16.13.0",
     "react-fontawesome": "^1.7.1",
     "react-live-clock": "^4.0.5",
     "react-scripts": "3.3.1",
