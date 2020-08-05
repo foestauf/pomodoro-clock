@@ -5,7 +5,7 @@
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.2",
     "@testing-library/react": "^10.4.7",
-    "@testing-library/user-event": "^7.2.1",
+    "@testing-library/user-event": "^12.1.0",
     "accurate-interval": "^1.0.9",
     "bootstrap": "^4.5.0",
     "font-awesome": "^4.7.0",
