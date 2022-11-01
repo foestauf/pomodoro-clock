@@ -1,25 +1,19 @@
 {
   "files": {
-    "main.css": "/pomodoro-clock/static/css/main.176c9406.chunk.css",
-    "main.js": "/pomodoro-clock/static/js/main.c26c1054.chunk.js",
-    "main.js.map": "/pomodoro-clock/static/js/main.c26c1054.chunk.js.map",
-    "runtime-main.js": "/pomodoro-clock/static/js/runtime-main.938b8e48.js",
-    "runtime-main.js.map": "/pomodoro-clock/static/js/runtime-main.938b8e48.js.map",
-    "static/css/2.36eb0507.chunk.css": "/pomodoro-clock/static/css/2.36eb0507.chunk.css",
-    "static/js/2.a0fedf9c.chunk.js": "/pomodoro-clock/static/js/2.a0fedf9c.chunk.js",
-    "static/js/2.a0fedf9c.chunk.js.map": "/pomodoro-clock/static/js/2.a0fedf9c.chunk.js.map",
+    "main.css": "/pomodoro-clock/static/css/main.4071f18e.css",
+    "main.js": "/pomodoro-clock/static/js/main.c3e86d6c.js",
+    "static/media/fontawesome-webfont.svg?v=4.7.0": "/pomodoro-clock/static/media/fontawesome-webfont.c1e38fd9e0e74ba58f7a.svg",
+    "static/media/fontawesome-webfont.eot": "/pomodoro-clock/static/media/fontawesome-webfont.8b43027f47b20503057d.eot",
+    "static/media/fontawesome-webfont.ttf?v=4.7.0": "/pomodoro-clock/static/media/fontawesome-webfont.1e59d2330b4c6deb84b3.ttf",
+    "static/media/fontawesome-webfont.woff?v=4.7.0": "/pomodoro-clock/static/media/fontawesome-webfont.f691f37e57f04c152e23.woff",
+    "static/media/fontawesome-webfont.woff2?v=4.7.0": "/pomodoro-clock/static/media/fontawesome-webfont.20fd1704ea223900efa9.woff2",
+    "static/media/digital-7.ttf": "/pomodoro-clock/static/media/digital-7.93911ab167c943140756.ttf",
     "index.html": "/pomodoro-clock/index.html",
-    "static/css/2.36eb0507.chunk.css.map": "/pomodoro-clock/static/css/2.36eb0507.chunk.css.map",
-    "static/css/main.176c9406.chunk.css.map": "/pomodoro-clock/static/css/main.176c9406.chunk.css.map",
-    "static/js/2.a0fedf9c.chunk.js.LICENSE.txt": "/pomodoro-clock/static/js/2.a0fedf9c.chunk.js.LICENSE.txt",
-    "static/media/App.css": "/pomodoro-clock/static/media/digital-7.93911ab1.ttf",
-    "static/media/font-awesome.min.css": "/pomodoro-clock/static/media/fontawesome-webfont.f691f37e.woff"
+    "main.4071f18e.css.map": "/pomodoro-clock/static/css/main.4071f18e.css.map",
+    "main.c3e86d6c.js.map": "/pomodoro-clock/static/js/main.c3e86d6c.js.map"
   },
   "entrypoints": [
-    "static/js/runtime-main.938b8e48.js",
-    "static/css/2.36eb0507.chunk.css",
-    "static/js/2.a0fedf9c.chunk.js",
-    "static/css/main.176c9406.chunk.css",
-    "static/js/main.c26c1054.chunk.js"
+    "static/css/main.4071f18e.css",
+    "static/js/main.c3e86d6c.js"
   ]
 }
