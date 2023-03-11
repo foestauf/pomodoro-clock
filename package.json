@@ -9,9 +9,9 @@
     "accurate-interval": "^1.0.9",
     "bootstrap": "^5.0.0",
     "font-awesome": "^4.7.0",
-    "react": "^16.14.0",
+    "react": "^18.0.0",
     "react-bootstrap": "^2.0.0",
-    "react-dom": "^16.14.0",
+    "react-dom": "^18.0.0",
     "react-fontawesome": "^1.7.1",
     "react-live-clock": "^6.0.6",
     "react-scripts": "5.0.1",
@@ -45,6 +45,6 @@
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.5",
     "enzyme-to-json": "^3.6.1",
-    "react-test-renderer": "^16.14.0"
+    "react-test-renderer": "^18.0.0"
   }
 }
