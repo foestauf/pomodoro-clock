@@ -10,7 +10,7 @@
     "bootstrap": "^5.0.0",
     "font-awesome": "^4.7.0",
     "react": "^16.14.0",
-    "react-bootstrap": "^1.4.0",
+    "react-bootstrap": "^2.0.0",
     "react-dom": "^16.14.0",
     "react-fontawesome": "^1.7.1",
     "react-live-clock": "^6.0.6",
