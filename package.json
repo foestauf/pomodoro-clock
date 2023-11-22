@@ -1,47 +1,29 @@
 {
-  "name": "pomodoro-clock",
-  "version": "0.1.0",
+  "name": "vite-project",
   "private": true,
-  "dependencies": {
-    "@testing-library/jest-dom": "^5.11.9",
-    "@testing-library/react": "^11.1.0",
-    "@testing-library/user-event": "^14.0.0",
-    "accurate-interval": "^1.0.9",
-    "bootstrap": "^5.0.0",
-    "font-awesome": "^4.7.0",
-    "react": "^18.0.0",
-    "react-bootstrap": "^2.0.0",
-    "react-dom": "^18.0.0",
-    "react-fontawesome": "^1.7.1",
-    "react-live-clock": "^6.0.6",
-    "react-scripts": "5.0.1",
-    "scss": "^0.2.4"
-  },
+  "version": "0.0.0",
+  "type": "module",
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test-watcher": "react-scripts test --watchAll",
-    "test": "playwright test",
-    "eject": "react-scripts eject"
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "preview": "vite preview"
   },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "homepage": "http://foestauf.me/pomodoro-clock/",
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+  "dependencies": {
+    "font-awesome": "^4.7.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "@playwright/test": "^1.27.1",
-    "react-test-renderer": "^18.0.0"
+    "@types/react": "^18.2.37",
+    "@types/react-dom": "^18.2.15",
+    "@typescript-eslint/eslint-plugin": "^6.10.0",
+    "@typescript-eslint/parser": "^6.10.0",
+    "@vitejs/plugin-react": "^4.2.0",
+    "eslint": "^8.53.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.4",
+    "typescript": "^5.2.2",
+    "vite": "^5.0.0"
   }
 }

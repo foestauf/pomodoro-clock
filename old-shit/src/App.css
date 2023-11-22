@@ -1,7 +1,8 @@
-@font-face {
-  font-family: "digital-clock";
-  src: local("digital-clock"), url("./assets/fonts/digital-7.ttf");
+@font-face{
+  font-family:'digital-clock';
+  src: local('digital-clock'), url("./assets/fonts/digital-7.ttf");
 }
+
 
 body {
   background: #24292e;
@@ -25,8 +26,9 @@ body {
 
 .timer-button:focus {
   outline: 0;
-  box-shadow: none !important;
+  box-shadow: none!important;
 }
+
 
 .clock-face {
   font-family: digital-clock;
