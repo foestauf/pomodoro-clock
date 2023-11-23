@@ -99,8 +99,10 @@ const config: PlaywrightTestConfig = {
 
   //  Run your local dev server before starting the tests */
   webServer: {
-    command: "npm run start",
-    port: 3000,
+    command: "npx vite --port 3000",
+    url: "http://localhost:3000",
+    timeout: 10 * 1000,
+    reuseExistingServer: !process.env.CI,
   },
 };
 
