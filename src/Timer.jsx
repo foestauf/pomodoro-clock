@@ -2,7 +2,7 @@
 import React from "react";
 import "./App.css";
 import "font-awesome/css/font-awesome.min.css";
-import Clock from "../../src/components/Clock";
+import Clock from "./components/Clock"
 
 const pauseIcon = "fa fa-pause fa-2x";
 const playIcon = "fa fa-play fa-2x";
@@ -88,7 +88,7 @@ class Timer extends React.Component {
 
   beginCountDown() {
     this.setState({
-      intervalID: accurateInterval(() => {
+      intervalID: setInterval(() => {
         this.decrementTimer();
         this.phaseControl();
       }, 1000),

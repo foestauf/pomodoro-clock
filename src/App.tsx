@@ -40,7 +40,6 @@ function App() {
 
   const timerControl = () => {
     let second = 1000;
-    let date = new Date().getTime();
     let nextDate = new Date().getTime() + second;
     let onBreak = false;
 
@@ -50,7 +49,7 @@ function App() {
       setTimerState("stopped");
     } else {
       let intervalID = setInterval(() => {
-        date = new Date().getTime();
+        const date = new Date().getTime();
         if (date > nextDate) {
           setTimer((prevTimer) => {
             if (prevTimer <= 0 && !onBreak) {
@@ -68,7 +67,7 @@ function App() {
           });
           nextDate += second;
         }
-      }, 30);
+      }, 1000);
       setIntervalID(intervalID);
       setTimerState("running");
     }
