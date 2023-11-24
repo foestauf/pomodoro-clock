@@ -1,0 +1,50 @@
+{
+  "name": "pomodoro-clock",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@testing-library/jest-dom": "^5.11.9",
+    "@testing-library/react": "^11.1.0",
+    "@testing-library/user-event": "^14.0.0",
+    "accurate-interval": "^1.0.9",
+    "bootstrap": "^5.0.0",
+    "font-awesome": "^4.7.0",
+    "react": "^16.14.0",
+    "react-bootstrap": "^2.0.0",
+    "react-dom": "^16.14.0",
+    "react-fontawesome": "^1.7.1",
+    "react-live-clock": "^6.0.6",
+    "react-scripts": "5.0.1",
+    "scss": "^0.2.4"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test-watcher": "react-scripts test --watchAll",
+    "test": "playwright test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "homepage": "http://foestauf.me/pomodoro-clock/",
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.27.1",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.5",
+    "enzyme-to-json": "^3.6.1",
+    "react-test-renderer": "^16.14.0"
+  }
+}

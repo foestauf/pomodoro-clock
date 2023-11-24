@@ -1,0 +1,33 @@
+@font-face{
+  font-family:'digital-clock-font';
+  src: local('digital-clock'), url("./assets/fonts/digital-7.ttf");
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+#root {
+  height: 100vh;
+}
+
+#current-time {
+  height: 15%;
+}
+
+#main-display {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 35%;
+}
