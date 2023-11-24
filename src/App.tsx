@@ -8,15 +8,15 @@ function App() {
   const [timer, setTimer] = useState(25 * 60);
   const [timerState, setTimerState] = useState("stopped");
   const [breakLength, setBreakLength] = useState(5);
-  const [alarmColor, setAlarmColor] = useState({ color: "white" });
+  const [alarmColor] = useState({ color: "white" });
   const [sessionLength, setSessionLength] = useState(25);
-  const [intervalID, setIntervalID] = useState<NodeJS.Timeout | null>(null);
+  const [intervalID, setIntervalID] = useState<number | null>(null);
   const [timerType, setTimerType] = useState("Session");
   const audioBeep = useRef<HTMLAudioElement>(null);
 
   function clockify() {
-    let minutes = Math.floor(timer / 60);
-    let seconds = timer - minutes * 60;
+    const minutes = Math.floor(timer / 60);
+    const seconds = timer - minutes * 60;
     return (
       formatWithLeadingZero(minutes) + ":" + formatWithLeadingZero(seconds)
     );
@@ -39,7 +39,7 @@ function App() {
   };
 
   const timerControl = () => {
-    let second = 1000;
+    const second = 1000;
     let nextDate = new Date().getTime() + second;
     let onBreak = false;
 
@@ -48,7 +48,7 @@ function App() {
       setIntervalID(null);
       setTimerState("stopped");
     } else {
-      let intervalID = setInterval(() => {
+      const intervalID = setInterval(() => {
         const date = new Date().getTime();
         if (date > nextDate) {
           setTimer((prevTimer) => {
