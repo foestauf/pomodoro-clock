@@ -39,37 +39,35 @@ function App() {
   };
 
   const timerControl = () => {
-    const second = 1000;
-    let nextDate = new Date().getTime() + second;
-    let onBreak = false;
-
-    if (intervalID) {
-      clearInterval(intervalID);
+    if (timerState === "stopped") {
+      startTimer();
+      setTimerState("running");
+    } else {
+      clearInterval(intervalID!);
       setIntervalID(null);
       setTimerState("stopped");
+    }
+  };
+
+  const startTimer = () => {
+    // setTimer((timer) => timer - 1);
+    const countdown = setInterval(() => {
+      setTimer((timer) => timer - 1);
+      if (timer === 0) {
+        audioBeep.current!.play();
+        switchTimer();
+      }
+    }, 1000);
+    setIntervalID(countdown);
+  };
+
+  const switchTimer = () => {
+    if (timerType === "Session") {
+      setTimer(breakLength * 60);
+      setTimerType("Break");
     } else {
-      const intervalID = setInterval(() => {
-        const date = new Date().getTime();
-        if (date > nextDate) {
-          setTimer((prevTimer) => {
-            if (prevTimer <= 0 && !onBreak) {
-              audioBeep.current!.play();
-              onBreak = true;
-              setTimerType("Break");
-              return breakLength * 60;
-            } else if (prevTimer <= 0 && onBreak) {
-              audioBeep.current!.play();
-              onBreak = false;
-              setTimerType("Session");
-              return sessionLength * 60;
-            }
-            return prevTimer - 1;
-          });
-          nextDate += second;
-        }
-      }, 1000);
-      setIntervalID(intervalID);
-      setTimerState("running");
+      setTimer(sessionLength * 60);
+      setTimerType("Session");
     }
   };
 
