@@ -27,6 +27,16 @@ test.describe("Timer", () => {
     expect(sessionLength).toBe("24");
   });
 
+  test("adjusting session length then pressing start should change time", async ({
+    page,
+  }) => {
+    await page.click("#session-decrement");
+    await page.click("#start_stop");
+    await page.waitForTimeout(1000);
+    const time = await page.$eval("#time-left", (el) => el.textContent);
+    expect(time).toBe("23:59");
+  });
+
   test("session should increment by one", async ({ page }) => {
     await page.click("#session-increment");
     const sessionLength = await page.$eval(

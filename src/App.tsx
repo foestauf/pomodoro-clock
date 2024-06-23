@@ -40,6 +40,7 @@ function App() {
 
   const timerControl = () => {
     if (timerState === "stopped") {
+      setTimer(sessionLength * 60);
       startTimer();
       setTimerState("running");
     } else {
