@@ -4,14 +4,24 @@ import "font-awesome/css/font-awesome.min.css";
 import TimerLengthControl from "./components/TimerLengthControl";
 import Clock from "./components/Clock";
 
+enum TimerState {
+  Stopped = "stopped",
+  Running = "running",
+}
+
+enum TimerType {
+  Session = "Session",
+  Break = "Break",
+}
+
 function App() {
   const [timer, setTimer] = useState(25 * 60);
-  const [timerState, setTimerState] = useState("stopped");
+  const [timerState, setTimerState] = useState<TimerState>(TimerState.Stopped);
   const [breakLength, setBreakLength] = useState(5);
   const [alarmColor] = useState({ color: "white" });
   const [sessionLength, setSessionLength] = useState(25);
   const [intervalID, setIntervalID] = useState<number | null>(null);
-  const [timerType, setTimerType] = useState("Session");
+  const [timerType, setTimerType] = useState<TimerType>(TimerType.Session);
   const audioBeep = useRef<HTMLAudioElement>(null);
 
   function clockify() {
@@ -30,8 +40,8 @@ function App() {
     setTimer(25 * 60);
     setBreakLength(5);
     setSessionLength(25);
-    setTimerState("stopped");
-    setTimerType("Session");
+    setTimerState(TimerState.Stopped);
+    setTimerType(TimerType.Session);
     clearInterval(intervalID!);
     setIntervalID(null);
     audioBeep.current!.pause();
@@ -39,14 +49,14 @@ function App() {
   };
 
   const timerControl = () => {
-    if (timerState === "stopped") {
+    if (timerState === TimerState.Stopped) {
       setTimer(sessionLength * 60);
       startTimer();
-      setTimerState("running");
+      setTimerState(TimerState.Running);
     } else {
       clearInterval(intervalID!);
       setIntervalID(null);
-      setTimerState("stopped");
+      setTimerState(TimerState.Stopped);
     }
   };
 
@@ -63,12 +73,12 @@ function App() {
   };
 
   const switchTimer = () => {
-    if (timerType === "Session") {
+    if (timerType === TimerType.Session) {
       setTimer(breakLength * 60);
-      setTimerType("Break");
+      setTimerType(TimerType.Break);
     } else {
       setTimer(sessionLength * 60);
-      setTimerType("Session");
+      setTimerType(TimerType.Session);
     }
   };
 
