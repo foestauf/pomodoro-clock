@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import "./App.css";
 import "font-awesome/css/font-awesome.min.css";
 import TimerLengthControl from "./components/TimerLengthControl";
@@ -18,72 +18,76 @@ function App() {
   const [timer, setTimer] = useState(25 * 60);
   const [timerState, setTimerState] = useState<TimerState>(TimerState.Stopped);
   const [breakLength, setBreakLength] = useState(5);
-  const [alarmColor] = useState({ color: "white" });
   const [sessionLength, setSessionLength] = useState(25);
-  const [intervalID, setIntervalID] = useState<number | null>(null);
   const [timerType, setTimerType] = useState<TimerType>(TimerType.Session);
+  const intervalID = useRef<number | null>(null);
   const audioBeep = useRef<HTMLAudioElement>(null);
 
-  function clockify() {
+  const alarmColor = { color: "white" };
+
+  useEffect(() => {
+    if (timer < 0) {
+      audioBeep.current?.play();
+      switchTimer();
+    }
+  }, [timer]);
+
+  function clockify(): string {
     const minutes = Math.floor(timer / 60);
-    const seconds = timer - minutes * 60;
-    return (
-      formatWithLeadingZero(minutes) + ":" + formatWithLeadingZero(seconds)
-    );
+    const seconds = timer % 60;
+    return `${formatWithLeadingZero(minutes)}:${formatWithLeadingZero(
+      seconds
+    )}`;
   }
 
-  function formatWithLeadingZero(num: number) {
+  function formatWithLeadingZero(num: number): string {
     return num < 10 ? "0" + num : num.toString();
   }
 
   const handleReset = () => {
-    setTimer(25 * 60);
+    clearInterval(intervalID.current!);
+    intervalID.current = null;
+    setTimer(sessionLength * 60);
     setBreakLength(5);
     setSessionLength(25);
     setTimerState(TimerState.Stopped);
     setTimerType(TimerType.Session);
-    clearInterval(intervalID!);
-    setIntervalID(null);
-    audioBeep.current!.pause();
-    audioBeep.current!.currentTime = 0;
+    audioBeep.current?.pause();
+    if (audioBeep.current) audioBeep.current.currentTime = 0;
   };
 
   const timerControl = () => {
     if (timerState === TimerState.Stopped) {
-      setTimer(sessionLength * 60);
       startTimer();
       setTimerState(TimerState.Running);
     } else {
-      clearInterval(intervalID!);
-      setIntervalID(null);
+      clearInterval(intervalID.current!);
+      intervalID.current = null;
       setTimerState(TimerState.Stopped);
     }
   };
 
   const startTimer = () => {
-    // setTimer((timer) => timer - 1);
     const countdown = setInterval(() => {
-      setTimer((timer) => timer - 1);
-      if (timer === 0) {
-        audioBeep.current!.play();
-        switchTimer();
-      }
+      setTimer((prevTimer) => prevTimer - 1);
     }, 1000);
-    setIntervalID(countdown);
+    intervalID.current = countdown;
   };
 
   const switchTimer = () => {
     if (timerType === TimerType.Session) {
-      setTimer(breakLength * 60);
       setTimerType(TimerType.Break);
+      setTimer(breakLength * 60);
     } else {
-      setTimer(sessionLength * 60);
       setTimerType(TimerType.Session);
+      setTimer(sessionLength * 60);
     }
   };
 
   const controlIcon = () =>
-    timerState === "stopped" ? "fa fa-play fa-2x" : "fa fa-pause fa-2x";
+    timerState === TimerState.Stopped
+      ? "fa fa-play fa-2x"
+      : "fa fa-pause fa-2x";
 
   return (
     <div className="App">
