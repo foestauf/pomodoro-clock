@@ -40,6 +40,12 @@ function App() {
     )}`;
   }
 
+  useEffect(() => {
+    if (timerState === TimerState.Stopped && timerType === TimerType.Session) {
+      setTimer(sessionLength * 60);
+    }
+  }, [sessionLength]);
+
   function formatWithLeadingZero(num: number): string {
     return num < 10 ? "0" + num : num.toString();
   }
@@ -69,7 +75,7 @@ function App() {
 
   const startTimer = () => {
     const countdown = setInterval(() => {
-      setTimer((prevTimer) => prevTimer - 1);
+      setTimer((prev) => prev - 1);
     }, 1000);
     intervalID.current = countdown;
   };
