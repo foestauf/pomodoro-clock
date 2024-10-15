@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useCallback } from "react";
 import "./App.css";
 import "font-awesome/css/font-awesome.min.css";
 import TimerLengthControl from "./components/TimerLengthControl";
@@ -25,12 +25,22 @@ function App() {
 
   const alarmColor = { color: "white" };
 
+  const switchTimer = useCallback(() => {
+    if (timerType === TimerType.Session) {
+      setTimerType(TimerType.Break);
+      setTimer(breakLength * 60);
+    } else {
+      setTimerType(TimerType.Session);
+      setTimer(sessionLength * 60);
+    }
+  }, [breakLength, sessionLength, timerType]);
+
   useEffect(() => {
     if (timer < 0) {
       audioBeep.current?.play();
       switchTimer();
     }
-  }, [timer]);
+  }, [switchTimer, timer]);
 
   function clockify(): string {
     const minutes = Math.floor(timer / 60);
@@ -44,7 +54,7 @@ function App() {
     if (timerState === TimerState.Stopped && timerType === TimerType.Session) {
       setTimer(sessionLength * 60);
     }
-  }, [sessionLength]);
+  }, [sessionLength, timerState, timerType]);
 
   function formatWithLeadingZero(num: number): string {
     return num < 10 ? "0" + num : num.toString();
@@ -78,16 +88,6 @@ function App() {
       setTimer((prev) => prev - 1);
     }, 1000);
     intervalID.current = countdown;
-  };
-
-  const switchTimer = () => {
-    if (timerType === TimerType.Session) {
-      setTimerType(TimerType.Break);
-      setTimer(breakLength * 60);
-    } else {
-      setTimerType(TimerType.Session);
-      setTimer(sessionLength * 60);
-    }
   };
 
   const controlIcon = () =>
