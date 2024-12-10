@@ -26,11 +26,20 @@ function App() {
   const alarmColor = { color: "white" };
 
   useEffect(() => {
+    const switchTimer = () => {
+      if (timerType === TimerType.Session) {
+        setTimerType(TimerType.Break);
+        setTimer(breakLength * 60);
+      } else {
+        setTimerType(TimerType.Session);
+        setTimer(sessionLength * 60);
+      }
+    };
     if (timer < 0) {
       audioBeep.current?.play();
       switchTimer();
     }
-  }, [timer]);
+  }, [breakLength, sessionLength, timer, timerType]);
 
   function clockify(): string {
     const minutes = Math.floor(timer / 60);
@@ -41,10 +50,10 @@ function App() {
   }
 
   useEffect(() => {
-    if (timerState === TimerState.Stopped && timerType === TimerType.Session) {
+    if (timerType === TimerType.Session) {
       setTimer(sessionLength * 60);
     }
-  }, [sessionLength]);
+  }, [sessionLength, timerType]);
 
   function formatWithLeadingZero(num: number): string {
     return num < 10 ? "0" + num : num.toString();
@@ -78,16 +87,6 @@ function App() {
       setTimer((prev) => prev - 1);
     }, 1000);
     intervalID.current = countdown;
-  };
-
-  const switchTimer = () => {
-    if (timerType === TimerType.Session) {
-      setTimerType(TimerType.Break);
-      setTimer(breakLength * 60);
-    } else {
-      setTimerType(TimerType.Session);
-      setTimer(sessionLength * 60);
-    }
   };
 
   const controlIcon = () =>
