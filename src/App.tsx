@@ -1,8 +1,9 @@
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useCallback } from "react";
 import "./App.css";
 import "font-awesome/css/font-awesome.min.css";
 import TimerLengthControl from "./components/TimerLengthControl";
 import Clock from "./components/Clock";
+import CircularProgress from "./components/CircularProgress";
 
 enum TimerState {
   Stopped = "stopped",
@@ -59,40 +60,79 @@ function App() {
     return num < 10 ? "0" + num : num.toString();
   }
 
-  const handleReset = () => {
+  const handleReset = useCallback(() => {
     clearInterval(intervalID.current!);
     intervalID.current = null;
-    setTimer(sessionLength * 60);
+    setTimer(25 * 60);
     setBreakLength(5);
     setSessionLength(25);
     setTimerState(TimerState.Stopped);
     setTimerType(TimerType.Session);
     audioBeep.current?.pause();
     if (audioBeep.current) audioBeep.current.currentTime = 0;
-  };
+  }, []);
 
-  const timerControl = () => {
+  const timerControl = useCallback(() => {
     if (timerState === TimerState.Stopped) {
-      startTimer();
+      const countdown = setInterval(() => {
+        setTimer((prev) => prev - 1);
+      }, 1000);
+      intervalID.current = countdown;
       setTimerState(TimerState.Running);
     } else {
       clearInterval(intervalID.current!);
       intervalID.current = null;
       setTimerState(TimerState.Stopped);
     }
-  };
+  }, [timerState]);
 
-  const startTimer = () => {
-    const countdown = setInterval(() => {
-      setTimer((prev) => prev - 1);
-    }, 1000);
-    intervalID.current = countdown;
-  };
+  const switchToBreak = useCallback(() => {
+    if (timerType === TimerType.Session) {
+      clearInterval(intervalID.current!);
+      intervalID.current = null;
+      setTimerState(TimerState.Stopped);
+      setTimerType(TimerType.Break);
+      setTimer(breakLength * 60);
+    }
+  }, [timerType, breakLength]);
+
+  const switchToSession = useCallback(() => {
+    if (timerType === TimerType.Break) {
+      clearInterval(intervalID.current!);
+      intervalID.current = null;
+      setTimerState(TimerState.Stopped);
+      setTimerType(TimerType.Session);
+      setTimer(sessionLength * 60);
+    }
+  }, [timerType, sessionLength]);
 
   const controlIcon = () =>
     timerState === TimerState.Stopped
       ? "fa fa-play fa-2x"
       : "fa fa-pause fa-2x";
+
+  useEffect(() => {
+    const handleKeyPress = (e: KeyboardEvent) => {
+      switch (e.key.toLowerCase()) {
+        case ' ':
+          e.preventDefault();
+          timerControl();
+          break;
+        case 'r':
+          handleReset();
+          break;
+        case 'b':
+          switchToBreak();
+          break;
+        case 's':
+          switchToSession();
+          break;
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyPress);
+    return () => window.removeEventListener('keydown', handleKeyPress);
+  }, [timerControl, handleReset, switchToBreak, switchToSession]);
 
   return (
     <div className="App">
@@ -107,6 +147,17 @@ function App() {
           </div>
 
           <div id="timer-wrapper">
+            <div className="progress-container">
+              <CircularProgress
+                progress={timer}
+                total={timerType === TimerType.Session ? sessionLength * 60 : breakLength * 60}
+                color={timerType === TimerType.Session ? '#4CAF50' : '#FF9800'}
+              />
+              <div id="time-left" className="clock-face">
+                {clockify()}
+              </div>
+            </div>
+            
             <div id="break-label">
               <TimerLengthControl
                 titleID="break-label"
@@ -118,9 +169,7 @@ function App() {
                 length={breakLength}
               />
             </div>
-            <div id="time-left" className="clock-face">
-              {clockify()}
-            </div>
+            
             <TimerLengthControl
               titleID="session-label"
               minID="session-decrement"
@@ -149,6 +198,15 @@ function App() {
             <button id="reset" className="timer-button" onClick={handleReset}>
               <i className="fa fa-refresh fa-2x" />
             </button>
+          </div>
+          <div className="keyboard-shortcuts">
+            <p>Keyboard Shortcuts:</p>
+            <ul>
+              <li>Space - Start/Stop</li>
+              <li>R - Reset</li>
+              <li>B - Switch to Break</li>
+              <li>S - Switch to Session</li>
+            </ul>
           </div>
         </div>
       </div>

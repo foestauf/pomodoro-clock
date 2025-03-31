@@ -45,3 +45,48 @@ body {
 #timer-control {
   align-content: center;
 }
+
+.progress-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0;
+}
+
+.progress-container #time-left {
+  position: absolute;
+  font-size: 2.5rem;
+  font-weight: bold;
+}
+
+.circular-progress {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.keyboard-shortcuts {
+  margin-top: 20px;
+  padding: 10px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 5px;
+  font-size: 0.9rem;
+}
+
+.keyboard-shortcuts ul {
+  list-style: none;
+  padding: 0;
+  margin: 5px 0 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.keyboard-shortcuts li {
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 3px 8px;
+  border-radius: 3px;
+  font-size: 0.8rem;
+}
