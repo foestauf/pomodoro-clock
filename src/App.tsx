@@ -5,6 +5,8 @@ import TimerLengthControl from "./components/TimerLengthControl";
 import Clock from "./components/Clock";
 import CircularProgress from "./components/CircularProgress";
 import AnalyticsSidebar from "./components/AnalyticsSidebar";
+import ThemeToggle from "./components/ThemeToggle";
+import { ThemeProvider } from "./contexts/ThemeContext";
 import { startSession, endSession } from "./services/analyticsService";
 
 enum TimerState {
@@ -17,17 +19,15 @@ enum TimerType {
   Break = "Break",
 }
 
-function App() {
+function AppContent() {
   const [timer, setTimer] = useState(25 * 60);
   const [timerState, setTimerState] = useState<TimerState>(TimerState.Stopped);
   const [breakLength, setBreakLength] = useState(5);
   const [sessionLength, setSessionLength] = useState(25);
   const [timerType, setTimerType] = useState<TimerType>(TimerType.Session);
-  const [sessionCount, setSessionCount] = useState(0); // Add state to track session count
+  const [sessionCount, setSessionCount] = useState(0);
   const intervalID = useRef<number | null>(null);
   const audioBeep = useRef<HTMLAudioElement>(null);
-
-  const alarmColor = { color: "white" };
 
   useEffect(() => {
     const switchTimer = () => {
@@ -74,29 +74,26 @@ function App() {
     audioBeep.current?.pause();
     if (audioBeep.current) audioBeep.current.currentTime = 0;
 
-    // End the current session if timer was running
     if (timerState === TimerState.Running) {
       endSession();
-      setSessionCount((prev) => prev + 1); // Increment session count
+      setSessionCount((prev) => prev + 1);
     }
   }, [timerState]);
 
   const timerControl = useCallback(() => {
     if (timerState === TimerState.Stopped) {
-      // Start the timer and record the session start
       const countdown = setInterval(() => {
         setTimer((prev) => prev - 1);
       }, 1000);
       intervalID.current = countdown;
       setTimerState(TimerState.Running);
-      startSession(); // Start tracking the session
+      startSession();
     } else {
-      // Stop the timer and record the session end
       clearInterval(intervalID.current!);
       intervalID.current = null;
       setTimerState(TimerState.Stopped);
-      endSession(); // End the current session
-      setSessionCount((prev) => prev + 1); // Increment session count
+      endSession();
+      setSessionCount((prev) => prev + 1);
     }
   }, [timerState]);
 
@@ -151,6 +148,7 @@ function App() {
   return (
     <div className="App">
       <div className="app-container">
+        <ThemeToggle />
         <AnalyticsSidebar key={sessionCount} />
         <div className="main-content">
           <div>Current Time</div>
@@ -159,7 +157,7 @@ function App() {
           </div>
           <div id="main-display">
             <div id="crunc-supreme-wrapper">
-              <div id="time-label" style={alarmColor}>
+              <div id="time-label">
                 <h1>{timerType}</h1>
               </div>
 
@@ -173,7 +171,9 @@ function App() {
                         : breakLength * 60
                     }
                     color={
-                      timerType === TimerType.Session ? "#4CAF50" : "#FF9800"
+                      timerType === TimerType.Session
+                        ? "var(--app-session)"
+                        : "var(--app-break)"
                     }
                   />
                   <div id="time-left" className="clock-face">
@@ -240,6 +240,14 @@ function App() {
         </div>
       </div>
     </div>
+  );
+}
+
+function App() {
+  return (
+    <ThemeProvider>
+      <AppContent />
+    </ThemeProvider>
   );
 }
 

@@ -44,7 +44,7 @@ const LineChart: React.FC<LineChartProps> = ({
   const points = data.values
     .map((value, i) => {
       const x = i * step;
-      const y = height - ((value - min) / range) * (height - 30) - 10;
+      const y = height - ((value - min) / range) * (height - 30) - 10; // Leave space for labels
       return `${x},${y}`;
     })
     .join(" ");
@@ -223,20 +223,20 @@ const AnalyticsSidebar: React.FC = () => {
 
   return (
     <div className="analytics-sidebar">
-      <h2>Session Analytics</h2>
+      <h2 className="font-bold">Session Analytics</h2>
 
       {/* Summary statistics */}
       <div className="summary-stats">
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <div className="flex justify-between">
           <div>
             <h4>Total Sessions</h4>
-            <p style={{ margin: 0, fontSize: "24px", fontWeight: "bold" }}>
+            <p className="m-0 text-2xl font-bold">
               {completedSessions.length}
             </p>
           </div>
           <div>
             <h4>Avg Duration</h4>
-            <p style={{ margin: 0, fontSize: "24px", fontWeight: "bold" }}>
+            <p className="m-0 text-2xl font-bold">
               {formatDuration(avgDuration)}
             </p>
           </div>
@@ -244,7 +244,7 @@ const AnalyticsSidebar: React.FC = () => {
       </div>
 
       {/* Tab navigation */}
-      <div style={{ display: "flex", marginBottom: "16px" }}>
+      <div className="flex mb-4">
         <button
           onClick={() => setActiveTab("daily")}
           className={`tab-button ${activeTab === "daily" ? "active" : ""}`}
