@@ -1,6 +1,71 @@
 # Pomodoro Clock
 
-A feature-rich Pomodoro timer application that helps you manage your work sessions effectively.
+A simple Pomodoro Clock application with session analytics.
+
+## Features
+
+- Timer with configurable session and break lengths
+- Session analytics with charts and statistics
+- Keyboard shortcuts for easy control
+- Responsive design with Tailwind CSS 4
+
+## Tech Stack
+
+- React
+- TypeScript
+- Tailwind CSS 4
+- Vite
+
+## Development
+
+### Installation
+
+```bash
+npm install
+```
+
+### Running the app
+
+```bash
+npm run dev
+```
+
+### Building for production
+
+```bash
+npm run build
+```
+
+### Running tests
+
+```bash
+npm test
+```
+
+## Styling with Tailwind CSS 4
+
+This project uses Tailwind CSS 4 for styling. The configuration includes:
+
+- **Vite Integration**: Using `@tailwindcss/vite` plugin in vite.config.ts
+- **CSS Structure**: 
+  - `src/index.css` - Contains Tailwind directives and base styles
+  - `src/App.css` - Contains component-specific styles
+
+### Tailwind 4 Notes
+
+When working with Tailwind 4:
+
+1. Use standard Tailwind utility classes in components (flex, justify-between, etc.)
+2. Avoid using theme functions in CSS files
+3. The PostCSS plugin is not needed as we're using the Vite plugin
+
+### CSS Organization
+
+The application uses a mix of:
+
+1. Tailwind utility classes directly in the JSX
+2. Component-specific CSS classes for more complex styling
+3. Custom theme extensions in the Tailwind config
 
 ## Basic Usage
 
