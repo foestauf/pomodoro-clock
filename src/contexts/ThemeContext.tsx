@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { ThemeMode, getThemePreference } from "../styles/theme";
 
 interface ThemeContextType {
@@ -35,16 +35,15 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
     const validTheme: ThemeMode =
       theme === "light" || theme === "dark" ? theme : "light";
     document.documentElement.setAttribute("data-theme", validTheme);
-  }, []);
+  }, [theme]);
 
   const toggleTheme = () => {
-    console.log("Toggle theme called, current theme:", theme);
     setTheme((prevTheme) => {
       // Ensure we're toggling from a valid state
       const currentTheme =
         prevTheme === "light" || prevTheme === "dark" ? prevTheme : "light";
       const newTheme = currentTheme === "light" ? "dark" : "light";
-      console.log("Setting theme to:", newTheme);
+
       return newTheme;
     });
   };
