@@ -4,12 +4,12 @@
 }
 
 body {
-  background: #24292e;
+  background: var(--app-bg);
   font-size: 20px;
   text-align: center;
   height: 100vh;
   width: 100vw;
-  color: rgb(214, 216, 218);
+  color: var(--app-text);
   margin: 0;
   padding: 0;
   overflow-x: hidden;
@@ -41,7 +41,7 @@ body {
 .page-title {
   font-size: 2rem;
   margin-bottom: 15px;
-  color: white;
+  color: var(--app-text);
   text-align: center;
   width: 100%;
 }

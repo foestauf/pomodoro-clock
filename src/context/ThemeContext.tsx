@@ -30,12 +30,6 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
     localStorage.setItem("theme", validTheme);
   }, [theme]);
 
-  // Apply theme on mount to ensure consistency
-  useEffect(() => {
-    const validTheme = validateTheme(theme);
-    document.documentElement.setAttribute("data-theme", validTheme);
-  }, [theme]);
-
   const toggleTheme = () => {
     setTheme((prevTheme) => {
       const currentTheme = validateTheme(prevTheme);

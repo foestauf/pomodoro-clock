@@ -16,14 +16,16 @@
   align-items: center;
   margin: 10px;
   padding: 10px;
-  background-color: rgba(255, 255, 255, 0.05);
+  background-color: var(--app-sidebar);
   border-radius: 8px;
   min-width: 150px;
+  color: var(--app-text);
 }
 
 .control-title {
   margin-bottom: 10px;
   font-weight: bold;
+  color: var(--app-text);
 }
 
 .control-buttons {
@@ -37,6 +39,7 @@
   font-size: 1.2rem;
   font-weight: bold;
   min-width: 40px;
+  color: var(--app-text);
 }
 
 /* Media Queries */
