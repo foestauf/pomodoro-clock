@@ -30,12 +30,15 @@ const loadSessions = (): Session[] => {
   if (storedSessions) {
     try {
       // Parse dates properly from JSON
-      const parsedSessions = JSON.parse(storedSessions, (key, value) => {
-        if (key === "startTime" || key === "endTime") {
-          return value ? new Date(value) : null;
+      const parsedSessions = JSON.parse(
+        storedSessions,
+        (key: string, value: unknown): unknown => {
+          if (key === "startTime" || key === "endTime") {
+            return value ? new Date(value as string) : null;
+          }
+          return value;
         }
-        return value;
-      });
+      ) as Session[];
       return parsedSessions;
     } catch (e) {
       console.error("Error parsing sessions from localStorage:", e);
@@ -245,7 +248,10 @@ export function getSessionTimeDistribution(): ChartData {
   if (completedSessions.length === 0) return { labels: [], values: [] };
 
   // Group by hour of day (0-23)
-  const hourCounts = Array(24).fill(0);
+  const hourCounts = new Array<number>(24);
+  for (let i = 0; i < 24; i++) {
+    hourCounts[i] = 0;
+  }
 
   completedSessions.forEach((session) => {
     if (session.endTime) {

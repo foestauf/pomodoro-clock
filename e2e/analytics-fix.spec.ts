@@ -27,7 +27,7 @@ test.describe("Analytics Functionality", () => {
     await page.waitForTimeout(1000);
 
     // Check if the session was recorded
-    const totalSessions = await page.locator(".summary-stats p").first();
+    const totalSessions = page.locator(".summary-stats p").first();
     await expect(totalSessions).toContainText("1");
   });
 
@@ -45,7 +45,7 @@ test.describe("Analytics Functionality", () => {
     await page.waitForTimeout(500);
 
     // Check if the sessions tab is active
-    const sessionsTab = await page.locator('[data-testid="sessions-tab"]');
+    const sessionsTab = page.locator('[data-testid="sessions-tab"]');
     await expect(sessionsTab).toHaveClass(/active/);
 
     // Check for chart titles in the sessions tab

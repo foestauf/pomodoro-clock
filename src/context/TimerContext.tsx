@@ -115,7 +115,13 @@ export function TimerProvider({ children }: { children: ReactNode }) {
       intervalID.current = null;
       setTimerState(TimerState.Stopped);
 
-      audioBeep.current?.play();
+      // Handle the promise returned by play() method
+      if (audioBeep.current) {
+        void audioBeep.current.play().catch((err) => {
+          console.error("Error playing audio:", err);
+        });
+      }
+
       if (timerType === TimerType.Session) {
         // Session ended
         endSession(); // End analytics session
