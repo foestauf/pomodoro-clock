@@ -1,0 +1,33 @@
+.keyboard-shortcuts {
+  margin-top: 30px;
+  padding: 10px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 5px;
+  font-size: 0.9rem;
+  width: 100%;
+  max-width: 500px;
+}
+
+.keyboard-shortcuts ul {
+  list-style: none;
+  padding: 0;
+  margin: 5px 0 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+.keyboard-shortcuts li {
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 3px 8px;
+  border-radius: 3px;
+  font-size: 0.8rem;
+}
+
+/* Media query for mobile and tablet devices */
+@media (max-width: 1024px) {
+  .keyboard-shortcuts {
+    display: none; /* Hide keyboard shortcuts on mobile and tablet devices including iPad Pro */
+  }
+}

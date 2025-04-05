@@ -30,12 +30,15 @@ const loadSessions = (): Session[] => {
   if (storedSessions) {
     try {
       // Parse dates properly from JSON
-      const parsedSessions = JSON.parse(storedSessions, (key, value) => {
-        if (key === "startTime" || key === "endTime") {
-          return value ? new Date(value) : null;
+      const parsedSessions = JSON.parse(
+        storedSessions,
+        (key: string, value: unknown): unknown => {
+          if (key === "startTime" || key === "endTime") {
+            return value ? new Date(value as string) : null;
+          }
+          return value;
         }
-        return value;
-      });
+      ) as Session[];
       return parsedSessions;
     } catch (e) {
       console.error("Error parsing sessions from localStorage:", e);
@@ -96,18 +99,26 @@ export function endSession(): void {
     console.warn("No active session to end.");
     return;
   }
-  console.log("Ending session");
 
   const endTime = new Date();
   currentSession.endTime = endTime;
   currentSession.duration =
     endTime.getTime() - currentSession.startTime.getTime();
 
+  console.debug(
+    "Session completed with duration:",
+    currentSession.duration,
+    "ms"
+  );
+
   sessions.push(currentSession);
+  console.debug("Total sessions now:", sessions.length);
   currentSession = null;
 
   // Save sessions to localStorage
   saveSessions(sessions);
+
+  console.debug("Sessions saved to localStorage");
 }
 
 /**
@@ -129,7 +140,7 @@ function formatDate(date: Date): string {
  * Gets daily session statistics
  * Returns an array of daily stats with count, total duration, and average duration
  */
-export function getDailyStats(days: number = 7): DailyStats[] {
+export function getDailyStats(days = 7): DailyStats[] {
   const completedSessions = sessions.filter((s) => s.duration !== undefined);
   if (completedSessions.length === 0) return [];
 
@@ -157,9 +168,11 @@ export function getDailyStats(days: number = 7): DailyStats[] {
   completedSessions.forEach((session) => {
     const date = formatDate(session.startTime);
     if (statsMap.has(date)) {
-      const stats = statsMap.get(date)!;
-      stats.count++;
-      stats.totalDuration += session.duration || 0;
+      const stats = statsMap.get(date);
+      if (stats) {
+        stats.count++;
+        stats.totalDuration += session.duration ?? 0;
+      }
     }
   });
 
@@ -177,14 +190,16 @@ export function getDailyStats(days: number = 7): DailyStats[] {
  * Gets session duration chart data
  * Returns labels and values for the last n sessions
  */
-export function getSessionDurationChart(limit: number = 10): ChartData {
+export function getSessionDurationChart(limit = 10): ChartData {
   const completedSessions = sessions
     .filter((s) => s.duration !== undefined)
     .slice(-limit);
 
   return {
-    labels: completedSessions.map((_, index) => `Session ${index + 1}`),
-    values: completedSessions.map((s) => s.duration || 0),
+    labels: completedSessions.map(
+      (_, index) => `Session ${(index + 1).toString()}`
+    ),
+    values: completedSessions.map((s) => s.duration ?? 0),
   };
 }
 
@@ -192,7 +207,7 @@ export function getSessionDurationChart(limit: number = 10): ChartData {
  * Gets daily session count chart data
  * Returns labels and values for the last n days
  */
-export function getDailySessionCountChart(days: number = 7): ChartData {
+export function getDailySessionCountChart(days = 7): ChartData {
   const stats = getDailyStats(days);
 
   return {
@@ -212,7 +227,7 @@ export function getDailySessionCountChart(days: number = 7): ChartData {
  * Gets daily average duration chart data
  * Returns labels and values for the last n days
  */
-export function getDailyAverageDurationChart(days: number = 7): ChartData {
+export function getDailyAverageDurationChart(days = 7): ChartData {
   const stats = getDailyStats(days);
 
   return {
@@ -237,7 +252,10 @@ export function getSessionTimeDistribution(): ChartData {
   if (completedSessions.length === 0) return { labels: [], values: [] };
 
   // Group by hour of day (0-23)
-  const hourCounts = Array(24).fill(0);
+  const hourCounts = new Array<number>(24);
+  for (let i = 0; i < 24; i++) {
+    hourCounts[i] = 0;
+  }
 
   completedSessions.forEach((session) => {
     if (session.endTime) {
@@ -247,7 +265,7 @@ export function getSessionTimeDistribution(): ChartData {
   });
 
   return {
-    labels: hourCounts.map((_, hour) => `${hour}:00`),
+    labels: hourCounts.map((_, hour) => `${hour.toString()}:00`),
     values: hourCounts,
   };
 }
