@@ -11,9 +11,14 @@
 
 .progress-container #time-left {
   position: absolute;
-  font-size: 2.5rem;
+  font-size: 2.2rem;
   font-weight: bold;
   z-index: 10;
+  color: white;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
 }
 
 #time-label {
@@ -22,19 +27,8 @@
 }
 
 #time-left {
-  font-family: digital-clock;
+  font-family: digital-clock, monospace, sans-serif;
   font-size: 8rem;
-}
-
-.progress-container #time-left {
-  font-size: 2.2rem !important;
-  position: absolute !important;
-  z-index: 10 !important;
-  color: white !important;
-  top: 50% !important;
-  left: 50% !important;
-  transform: translate(-50%, -50%);
-  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
 }
 
 /* Media queries */
@@ -59,13 +53,6 @@
     justify-content: center;
     align-items: center;
     overflow: visible;
-  }
-
-  .progress-container #time-left {
-    position: absolute;
-    font-size: 2.5rem;
-    z-index: 10;
-    color: white;
   }
 
   #time-label {

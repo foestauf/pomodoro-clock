@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Dispatch, SetStateAction } from "react";
 import "./TimerLengthSettings.css";
 import TimerLengthControl from "../TimerLengthControl";
 import { useTimer } from "../../context/TimerContext";
@@ -15,6 +15,35 @@ const TimerLengthSettings: React.FC = () => {
     setSessionsBeforeLongBreak,
   } = useTimer();
 
+  // Create wrapper functions that match the expected Dispatch<SetStateAction<number>> type
+  const handleBreakLengthChange: Dispatch<SetStateAction<number>> = (value) => {
+    const newValue = typeof value === "function" ? value(breakLength) : value;
+    setBreakLength(newValue);
+  };
+
+  const handleSessionLengthChange: Dispatch<SetStateAction<number>> = (
+    value
+  ) => {
+    const newValue = typeof value === "function" ? value(sessionLength) : value;
+    setSessionLength(newValue);
+  };
+
+  const handleLongBreakLengthChange: Dispatch<SetStateAction<number>> = (
+    value
+  ) => {
+    const newValue =
+      typeof value === "function" ? value(longBreakLength) : value;
+    setLongBreakLength(newValue);
+  };
+
+  const handleSessionsBeforeLongBreakChange: Dispatch<
+    SetStateAction<number>
+  > = (value) => {
+    const newValue =
+      typeof value === "function" ? value(sessionsBeforeLongBreak) : value;
+    setSessionsBeforeLongBreak(newValue);
+  };
+
   return (
     <div className="timer-controls-container">
       <div id="break-label">
@@ -24,7 +53,7 @@ const TimerLengthSettings: React.FC = () => {
           addID="break-increment"
           lengthID="break-length"
           title="Break Length"
-          onClick={setBreakLength}
+          onClick={handleBreakLengthChange}
           length={breakLength}
         />
       </div>
@@ -35,7 +64,7 @@ const TimerLengthSettings: React.FC = () => {
           addID="session-increment"
           lengthID="session-length"
           title="Session Length"
-          onClick={setSessionLength}
+          onClick={handleSessionLengthChange}
           length={sessionLength}
         />
       </div>
@@ -46,7 +75,7 @@ const TimerLengthSettings: React.FC = () => {
           addID="long-break-increment"
           lengthID="long-break-length"
           title="Long Break Length"
-          onClick={setLongBreakLength}
+          onClick={handleLongBreakLengthChange}
           length={longBreakLength}
         />
       </div>
@@ -57,7 +86,7 @@ const TimerLengthSettings: React.FC = () => {
           addID="sessions-increment"
           lengthID="sessions-length"
           title="Sessions Before Long Break"
-          onClick={setSessionsBeforeLongBreak}
+          onClick={handleSessionsBeforeLongBreakChange}
           length={sessionsBeforeLongBreak}
         />
       </div>

@@ -6,6 +6,7 @@ import {
   useEffect,
   useCallback,
   ReactNode,
+  useMemo,
 } from "react";
 import { startSession, endSession } from "../services/analyticsService";
 
@@ -108,11 +109,11 @@ export function TimerProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (timer <= 0) {
       // Stop the timer
-      if (intervalID.current) {
+      if (intervalID.current !== null) {
         clearInterval(intervalID.current);
-        intervalID.current = null;
-        setTimerState(TimerState.Stopped);
       }
+      intervalID.current = null;
+      setTimerState(TimerState.Stopped);
 
       audioBeep.current?.play();
       if (timerType === TimerType.Session) {
@@ -156,13 +157,13 @@ export function TimerProvider({ children }: { children: ReactNode }) {
   }, [sessionLength, timerType]);
 
   // Format time for display
-  function clockify(): string {
+  const clockify = useCallback((): string => {
     const minutes = Math.floor(timer / 60);
     const seconds = timer % 60;
     return `${formatWithLeadingZero(minutes)}:${formatWithLeadingZero(
       seconds
     )}`;
-  }
+  }, [timer]);
 
   function formatWithLeadingZero(num: number): string {
     return num < 10 ? "0" + num : num.toString();
@@ -170,7 +171,9 @@ export function TimerProvider({ children }: { children: ReactNode }) {
 
   // Reset all timer settings
   const handleReset = useCallback(() => {
-    clearInterval(intervalID.current!);
+    if (intervalID.current !== null) {
+      clearInterval(intervalID.current);
+    }
     intervalID.current = null;
     setTimer(25 * 60);
     setBreakLength(5);
@@ -210,7 +213,9 @@ export function TimerProvider({ children }: { children: ReactNode }) {
       }
     } else {
       // Stop the timer and record the session end
-      clearInterval(intervalID.current!);
+      if (intervalID.current !== null) {
+        clearInterval(intervalID.current);
+      }
       intervalID.current = null;
       setTimerState(TimerState.Stopped);
       // Only end analytics session if timer was running for a work session
@@ -225,7 +230,9 @@ export function TimerProvider({ children }: { children: ReactNode }) {
   // Switch to break mode
   const switchToBreak = useCallback(() => {
     // Clear any running timer
-    clearInterval(intervalID.current!);
+    if (intervalID.current !== null) {
+      clearInterval(intervalID.current);
+    }
     intervalID.current = null;
     setTimerState(TimerState.Stopped);
     setTimerType(TimerType.Break);
@@ -235,7 +242,9 @@ export function TimerProvider({ children }: { children: ReactNode }) {
   // Switch to session mode
   const switchToSession = useCallback(() => {
     // Clear any running timer
-    clearInterval(intervalID.current!);
+    if (intervalID.current !== null) {
+      clearInterval(intervalID.current);
+    }
     intervalID.current = null;
     setTimerState(TimerState.Stopped);
     setTimerType(TimerType.Session);
@@ -243,34 +252,56 @@ export function TimerProvider({ children }: { children: ReactNode }) {
   }, [sessionLength]);
 
   // Get control icon
-  const controlIcon = () =>
-    timerState === TimerState.Stopped
-      ? "fa fa-play fa-2x"
-      : "fa fa-pause fa-2x";
+  const controlIcon = useCallback(
+    () =>
+      timerState === TimerState.Stopped
+        ? "fa fa-play fa-2x"
+        : "fa fa-pause fa-2x",
+    [timerState]
+  );
 
-  // Context value
-  const contextValue: TimerContextType = {
-    timer,
-    timerState,
-    breakLength,
-    sessionLength,
-    timerType,
-    sessionCount,
-    longBreakLength,
-    sessionsBeforeLongBreak,
-    completedSessionCycleCount,
-    audioBeep,
-    clockify,
-    handleReset,
-    timerControl,
-    switchToBreak,
-    switchToSession,
-    controlIcon,
-    setBreakLength,
-    setSessionLength,
-    setLongBreakLength,
-    setSessionsBeforeLongBreak,
-  };
+  // Context value wrapped in useMemo to prevent recreating the object on every render
+  const contextValue = useMemo<TimerContextType>(
+    () => ({
+      timer,
+      timerState,
+      breakLength,
+      sessionLength,
+      timerType,
+      sessionCount,
+      longBreakLength,
+      sessionsBeforeLongBreak,
+      completedSessionCycleCount,
+      audioBeep,
+      clockify,
+      handleReset,
+      timerControl,
+      switchToBreak,
+      switchToSession,
+      controlIcon,
+      setBreakLength,
+      setSessionLength,
+      setLongBreakLength,
+      setSessionsBeforeLongBreak,
+    }),
+    [
+      timer,
+      timerState,
+      breakLength,
+      sessionLength,
+      timerType,
+      sessionCount,
+      longBreakLength,
+      sessionsBeforeLongBreak,
+      completedSessionCycleCount,
+      clockify,
+      handleReset,
+      timerControl,
+      switchToBreak,
+      switchToSession,
+      controlIcon,
+    ]
+  );
 
   return (
     <TimerContext.Provider value={contextValue}>
