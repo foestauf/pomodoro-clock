@@ -140,7 +140,7 @@ function formatDate(date: Date): string {
  * Gets daily session statistics
  * Returns an array of daily stats with count, total duration, and average duration
  */
-export function getDailyStats(days: number = 7): DailyStats[] {
+export function getDailyStats(days = 7): DailyStats[] {
   const completedSessions = sessions.filter((s) => s.duration !== undefined);
   if (completedSessions.length === 0) return [];
 
@@ -168,9 +168,11 @@ export function getDailyStats(days: number = 7): DailyStats[] {
   completedSessions.forEach((session) => {
     const date = formatDate(session.startTime);
     if (statsMap.has(date)) {
-      const stats = statsMap.get(date)!;
-      stats.count++;
-      stats.totalDuration += session.duration || 0;
+      const stats = statsMap.get(date);
+      if (stats) {
+        stats.count++;
+        stats.totalDuration += session.duration ?? 0;
+      }
     }
   });
 
@@ -188,14 +190,16 @@ export function getDailyStats(days: number = 7): DailyStats[] {
  * Gets session duration chart data
  * Returns labels and values for the last n sessions
  */
-export function getSessionDurationChart(limit: number = 10): ChartData {
+export function getSessionDurationChart(limit = 10): ChartData {
   const completedSessions = sessions
     .filter((s) => s.duration !== undefined)
     .slice(-limit);
 
   return {
-    labels: completedSessions.map((_, index) => `Session ${index + 1}`),
-    values: completedSessions.map((s) => s.duration || 0),
+    labels: completedSessions.map(
+      (_, index) => `Session ${(index + 1).toString()}`
+    ),
+    values: completedSessions.map((s) => s.duration ?? 0),
   };
 }
 
@@ -203,7 +207,7 @@ export function getSessionDurationChart(limit: number = 10): ChartData {
  * Gets daily session count chart data
  * Returns labels and values for the last n days
  */
-export function getDailySessionCountChart(days: number = 7): ChartData {
+export function getDailySessionCountChart(days = 7): ChartData {
   const stats = getDailyStats(days);
 
   return {
@@ -223,7 +227,7 @@ export function getDailySessionCountChart(days: number = 7): ChartData {
  * Gets daily average duration chart data
  * Returns labels and values for the last n days
  */
-export function getDailyAverageDurationChart(days: number = 7): ChartData {
+export function getDailyAverageDurationChart(days = 7): ChartData {
   const stats = getDailyStats(days);
 
   return {
@@ -261,7 +265,7 @@ export function getSessionTimeDistribution(): ChartData {
   });
 
   return {
-    labels: hourCounts.map((_, hour) => `${hour}:00`),
+    labels: hourCounts.map((_, hour) => `${hour.toString()}:00`),
     values: hourCounts,
   };
 }

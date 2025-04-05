@@ -73,14 +73,14 @@ const AnalyticsSidebar: React.FC = () => {
 
         <div style={{ display: "flex", marginBottom: "16px" }}>
           <button
-            onClick={() => setActiveTab("daily")}
+            onClick={() => { setActiveTab("daily"); }}
             className={`tab-button ${activeTab === "daily" ? "active" : ""}`}
             data-testid="daily-tab"
           >
             Daily
           </button>
           <button
-            onClick={() => setActiveTab("sessions")}
+            onClick={() => { setActiveTab("sessions"); }}
             className={`tab-button ${activeTab === "sessions" ? "active" : ""}`}
             data-testid="sessions-tab"
           >

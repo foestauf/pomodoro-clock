@@ -117,7 +117,7 @@ export function TimerProvider({ children }: { children: ReactNode }) {
 
       // Handle the promise returned by play() method
       if (audioBeep.current) {
-        void audioBeep.current.play().catch((err) => {
+        void audioBeep.current.play().catch((err: unknown) => {
           console.error("Error playing audio:", err);
         });
       }
@@ -166,14 +166,12 @@ export function TimerProvider({ children }: { children: ReactNode }) {
   const clockify = useCallback((): string => {
     const minutes = Math.floor(timer / 60);
     const seconds = timer % 60;
-    return `${formatWithLeadingZero(minutes)}:${formatWithLeadingZero(
-      seconds
-    )}`;
+    const formattedMinutes =
+      minutes < 10 ? `0${minutes.toString()}` : minutes.toString();
+    const formattedSeconds =
+      seconds < 10 ? `0${seconds.toString()}` : seconds.toString();
+    return `${formattedMinutes}:${formattedSeconds}`;
   }, [timer]);
-
-  function formatWithLeadingZero(num: number): string {
-    return num < 10 ? "0" + num : num.toString();
-  }
 
   // Reset all timer settings
   const handleReset = useCallback(() => {

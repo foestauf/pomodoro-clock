@@ -44,6 +44,12 @@ const CircularProgress: React.FC<CircularProgressProps> = ({
   const circumference = radius * 2 * Math.PI;
   const offset = circumference - (progress / total) * circumference;
 
+  // Convert the percentage to a position along the circle for the stroke-dasharray
+  const progressStyle = {
+    strokeDashoffset: offset.toString(),
+    strokeDasharray: `${circumference.toString()} ${circumference.toString()}`,
+  };
+
   return (
     <div
       className="circular-progress"
@@ -76,9 +82,11 @@ const CircularProgress: React.FC<CircularProgressProps> = ({
           fill="none"
           stroke={color}
           strokeWidth={strokeWidth}
-          strokeDasharray={circumference}
-          strokeDashoffset={offset}
-          transform={`rotate(-90 ${displaySize / 2} ${displaySize / 2})`}
+          strokeDasharray={progressStyle.strokeDasharray}
+          strokeDashoffset={progressStyle.strokeDashoffset}
+          transform={`rotate(-90 ${(displaySize / 2).toString()} ${(
+            displaySize / 2
+          ).toString()})`}
           style={{ transition: "stroke-dashoffset 0.5s ease-in-out" }}
         />
       </svg>

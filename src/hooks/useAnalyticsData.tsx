@@ -37,7 +37,7 @@ export const useAnalyticsData = (refreshInterval = 30000) => {
       const data = getSessionData();
       const completedSessions = data.filter((s) => s.duration !== undefined);
       const totalDuration = completedSessions.reduce(
-        (sum, s) => sum + (s.duration || 0),
+        (sum, s) => sum + (s.duration ?? 0),
         0
       );
       const avgDuration =
@@ -82,14 +82,18 @@ export const useAnalyticsData = (refreshInterval = 30000) => {
     // Set up interval with more reasonable refresh rate (30 seconds by default)
     const intervalId = setInterval(fetchData, refreshInterval);
 
-    return () => clearInterval(intervalId);
+    return () => {
+      clearInterval(intervalId);
+    };
   }, [refreshInterval]);
 
   const formatDuration = (ms: number): string => {
     if (ms === 0) return "0 min";
     const minutes = Math.floor(ms / 60000);
     const seconds = Math.floor((ms % 60000) / 1000);
-    return minutes > 0 ? `${minutes} min ${seconds} sec` : `${seconds} sec`;
+    return minutes > 0
+      ? `${String(minutes)} min ${String(seconds)} sec`
+      : `${String(seconds)} sec`;
   };
 
   return { ...analyticsData, formatDuration };

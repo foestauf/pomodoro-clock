@@ -50,23 +50,37 @@ const LineChart: React.FC<LineChartProps> = ({
   const step =
     data.values.length > 1 ? chartWidth / (data.values.length - 1) : chartWidth;
 
-  const points = data.values
-    .map((value, i) => {
-      const x = i * step;
-      const y = height - ((value - min) / range) * (height - 30) - 10; // Leave space for labels
-      return `${x},${y}`;
-    })
-    .join(" ");
-
   // Format value for display
   const formatValue = (value: number): string => {
     if (value >= 60000) {
-      return `${Math.round(value / 60000)} min`;
+      return String(Math.round(value / 60000)) + " min";
     } else if (value >= 1000) {
-      return `${Math.round(value / 1000)} sec`;
+      return String(Math.round(value / 1000)) + " sec";
     }
-    return `${value}`;
+    return String(value);
   };
+
+  // Calculate coordinates for each data point
+  const coordsForLine = data.values.map((value, i) => {
+    const x = i * step;
+    const y = height - ((value - min) / range) * (height - 30) - 10;
+    return [x, y];
+  });
+
+  // Create the path string manually to avoid template literals with numbers
+  let linePath = "";
+  coordsForLine.forEach(([x, y], i) => {
+    if (i === 0) {
+      linePath += "M " + String(x) + " " + String(y);
+    } else {
+      linePath += " L " + String(x) + " " + String(y);
+    }
+  });
+
+  // Create x-axis and y-axis paths without using template literals
+  const xAxisPath =
+    "M 0 " + String(height) + " L " + String(chartWidth) + " " + String(height);
+  const yAxisPath = "M 0 0 L 0 " + String(height);
 
   return (
     <div className="chart-container" ref={chartContainer}>
@@ -81,17 +95,20 @@ const LineChart: React.FC<LineChartProps> = ({
           )}
 
           {/* Grid lines */}
-          {[0.25, 0.5, 0.75].map((ratio, i) => (
-            <line
-              key={i}
-              x1="0"
-              y1={height - ratio * (height - 30) - 10}
-              x2={chartWidth}
-              y2={height - ratio * (height - 30) - 10}
-              stroke="rgba(255, 255, 255, 0.3)"
-              strokeDasharray="2,2"
-            />
-          ))}
+          {[0.25, 0.5, 0.75].map((ratio, i) => {
+            const yPosition = height - ratio * (height - 30) - 10;
+            return (
+              <line
+                key={i}
+                x1="0"
+                y1={yPosition}
+                x2={chartWidth}
+                y2={yPosition}
+                stroke="rgba(255, 255, 255, 0.3)"
+                strokeDasharray="2,2"
+              />
+            );
+          })}
 
           {/* X-axis labels */}
           {data.labels.map((label, i) => {
@@ -118,22 +135,27 @@ const LineChart: React.FC<LineChartProps> = ({
           })}
 
           {/* Line */}
-          <polyline
+          <path fill="none" stroke={color} strokeWidth="2" d={linePath} />
+
+          {/* X-axis */}
+          <path
             fill="none"
-            stroke={color}
-            strokeWidth="2"
-            points={points}
+            stroke="rgba(214, 216, 218, 0.7)"
+            strokeWidth="1"
+            d={xAxisPath}
+          />
+
+          {/* Y-axis */}
+          <path
+            fill="none"
+            stroke="rgba(214, 216, 218, 0.7)"
+            strokeWidth="1"
+            d={yAxisPath}
           />
 
           {/* Data points */}
-          {data.values.map((value, i) => (
-            <circle
-              key={i}
-              cx={i * step}
-              cy={height - ((value - min) / range) * (height - 30) - 10}
-              r="3"
-              fill={color}
-            />
+          {coordsForLine.map(([x, y], i) => (
+            <circle key={i} cx={String(x)} cy={String(y)} r="3" fill={color} />
           ))}
         </svg>
 

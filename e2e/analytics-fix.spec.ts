@@ -4,7 +4,7 @@ test.describe("Analytics Functionality", () => {
   test.beforeEach(async ({ page }) => {
     await page.goto("/");
     // Clear localStorage to start with a clean state
-    await page.evaluate(() => localStorage.clear());
+    await page.evaluate(() => { localStorage.clear(); });
     // Reload the page to apply the cleared localStorage
     await page.reload();
     // Ensure the page has focus

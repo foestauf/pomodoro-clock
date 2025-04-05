@@ -28,7 +28,7 @@ export const useResponsive = ({
     };
   }, [breakpoint, isMenuOpen]);
 
-  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+  const toggleMenu = () => { setIsMenuOpen(!isMenuOpen); };
 
   return { isMobile, isMenuOpen, toggleMenu };
 };

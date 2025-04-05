@@ -26,7 +26,7 @@ const KeyboardShortcuts: React.FC = () => {
     };
 
     window.addEventListener("keydown", handleKeyPress);
-    return () => window.removeEventListener("keydown", handleKeyPress);
+    return () => { window.removeEventListener("keydown", handleKeyPress); };
   }, [timerControl, handleReset, switchToBreak, switchToSession]);
 
   return (

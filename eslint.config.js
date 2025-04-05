@@ -10,8 +10,8 @@ export default tseslint.config(
   {
     ignores: ["**/*.config.js", "**/dist/**", "**/*.config.ts"],
   },
-  eslint.configs.recommended,
-  tseslint.configs.recommendedTypeChecked,
+  tseslint.configs.strictTypeChecked,
+  tseslint.configs.stylisticTypeChecked,
   {
     plugins: {
       "react-compiler": reactCompiler,
