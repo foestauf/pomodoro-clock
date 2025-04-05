@@ -1,0 +1,129 @@
+.progress-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px 0 30px;
+  width: 100%;
+  min-height: 200px;
+  max-width: 300px;
+}
+
+.progress-container #time-left {
+  position: absolute;
+  font-size: 2.5rem;
+  font-weight: bold;
+  z-index: 10;
+}
+
+#time-label {
+  margin-bottom: 10px;
+  color: white;
+}
+
+#time-left {
+  font-family: digital-clock;
+  font-size: 8rem;
+}
+
+.progress-container #time-left {
+  font-size: 2.2rem !important;
+  position: absolute !important;
+  z-index: 10 !important;
+  color: white !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%);
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+/* Media queries */
+@media (max-width: 1024px) {
+  #time-left {
+    font-size: 6rem;
+  }
+}
+
+@media (max-width: 768px) {
+  #time-left {
+    font-size: 5rem;
+  }
+
+  .progress-container {
+    margin: 20px 0;
+    position: relative;
+    width: 100%;
+    max-width: 300px;
+    min-height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: visible;
+  }
+
+  .progress-container #time-left {
+    position: absolute;
+    font-size: 2.5rem;
+    z-index: 10;
+    color: white;
+  }
+
+  #time-label {
+    margin-bottom: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  #time-label h2 {
+    font-size: 1.2rem;
+    margin: 5px 0;
+  }
+
+  .progress-container {
+    width: 100%;
+    max-width: 220px;
+    min-height: 180px;
+    margin: 5px auto 15px !important;
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+    overflow: visible;
+    position: relative;
+    z-index: 5;
+  }
+
+  .mobile-visible {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    position: relative !important;
+    z-index: 100 !important;
+    margin: 20px auto !important;
+    width: 100% !important;
+    max-width: 250px !important;
+    min-height: 200px !important;
+  }
+
+  .mobile-visible #time-left {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    font-size: 2.5rem !important;
+    color: white !important;
+    z-index: 101 !important;
+  }
+}
+
+@media (max-width: 360px) {
+  .progress-container {
+    max-width: 200px;
+  }
+
+  .progress-container #time-left {
+    font-size: 1.8rem;
+  }
+}

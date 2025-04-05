@@ -96,18 +96,26 @@ export function endSession(): void {
     console.warn("No active session to end.");
     return;
   }
-  console.log("Ending session");
 
   const endTime = new Date();
   currentSession.endTime = endTime;
   currentSession.duration =
     endTime.getTime() - currentSession.startTime.getTime();
 
+  console.debug(
+    "Session completed with duration:",
+    currentSession.duration,
+    "ms"
+  );
+
   sessions.push(currentSession);
+  console.debug("Total sessions now:", sessions.length);
   currentSession = null;
 
   // Save sessions to localStorage
   saveSessions(sessions);
+
+  console.debug("Sessions saved to localStorage");
 }
 
 /**

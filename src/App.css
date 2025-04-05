@@ -10,15 +10,21 @@ body {
   height: 100vh;
   width: 100vw;
   color: rgb(214, 216, 218);
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
 }
+
 .App {
   height: 100vh;
+  width: 100%;
 }
 
 .app-container {
   display: flex;
   height: 100%;
   width: 100%;
+  flex-direction: row;
 }
 
 .main-content {
@@ -27,18 +33,27 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: flex-start;
+  overflow-y: auto;
 }
 
-.timer-button {
-  background: transparent;
-  border-width: 0px;
-  cursor: pointer;
-  color: dimgray;
+/* Page title styling */
+.page-title {
+  font-size: 2rem;
+  margin-bottom: 15px;
+  color: white;
+  text-align: center;
+  width: 100%;
 }
 
-.timer-button:focus {
-  outline: 0;
-  box-shadow: none !important;
+.current-time-container {
+  margin: 10px 0 20px;
+  padding: 10px;
+  text-align: center;
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 300px;
 }
 
 .clock-face {
@@ -46,145 +61,68 @@ body {
   font-size: 6rem;
 }
 
-#time-left {
-  font-size: 8rem;
+#current-time.clock-face {
+  font-size: 3.5rem;
+  line-height: 1;
+  margin-top: 5px;
 }
 
-#timer-wrapper {
+.mobile-layout {
+  width: 100%;
   display: flex;
-  justify-content: center;
-  align-content: center;
-}
-#timer-control {
-  align-content: center;
-}
-
-.progress-container {
-  position: relative;
-  display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  margin: 20px 0;
+  max-width: 600px;
 }
 
-.progress-container #time-left {
-  position: absolute;
-  font-size: 2.5rem;
-  font-weight: bold;
+/* Media Queries for Responsive Design */
+@media (max-width: 1024px) {
+  .clock-face {
+    font-size: 4rem;
+  }
 }
 
-.circular-progress {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+@media (max-width: 768px) {
+  .app-container {
+    flex-direction: column;
+  }
+
+  .main-content {
+    padding: 15px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .current-time-container {
+    margin-bottom: 10px;
+  }
+
+  .clock-face {
+    font-size: 3.5rem;
+  }
 }
 
-.keyboard-shortcuts {
-  margin-top: 20px;
-  padding: 10px;
-  background-color: rgba(255, 255, 255, 0.1);
-  border-radius: 5px;
-  font-size: 0.9rem;
+@media (max-width: 480px) {
+  .main-content {
+    padding: 10px;
+  }
+
+  /* Page title styling for mobile */
+  .page-title {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+  }
+
+  /* Adjust font sizes */
+  .clock-face {
+    font-size: 2.5rem;
+  }
+
+  .current-time-container {
+    margin-bottom: 5px;
+  }
 }
 
-.keyboard-shortcuts ul {
-  list-style: none;
-  padding: 0;
-  margin: 5px 0 0 0;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.keyboard-shortcuts li {
-  background-color: rgba(255, 255, 255, 0.1);
-  padding: 3px 8px;
-  border-radius: 3px;
-  font-size: 0.8rem;
-}
-/* Analytics Sidebar Styles */
-.analytics-sidebar {
-  width: 320px;
-  padding: 16px;
-  border-right: 1px solid rgba(255, 255, 255, 0.1);
-  height: 100vh;
-  overflow-y: auto;
-  background-color: #2d3339; /* Slightly lighter than main background for depth */
-  color: rgb(214, 216, 218);
-}
-
-.analytics-sidebar h2 {
-  margin-top: 0;
-  color: rgb(214, 216, 218);
-  font-size: 1.5rem;
-}
-
-.analytics-sidebar h4 {
-  margin: 0 0 8px 0;
-  color: rgba(214, 216, 218, 0.8);
-}
-
-.analytics-sidebar p {
-  color: rgb(214, 216, 218);
-}
-
-.summary-stats {
-  background-color: rgba(255, 255, 255, 0.05);
-  padding: 12px;
-  border-radius: 8px;
-  margin-bottom: 16px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-}
-
-.tab-button {
-  flex: 1;
-  padding: 8px;
-  border: none;
-  cursor: pointer;
-  background-color: rgba(255, 255, 255, 0.1);
-  color: rgb(214, 216, 218);
-  transition: background-color 0.2s;
-}
-
-.tab-button.active {
-  background-color: #3b82f6;
-  color: white;
-}
-
-.tab-button:first-child {
-  border-radius: 4px 0 0 4px;
-}
-
-.tab-button:last-child {
-  border-radius: 0 4px 4px 0;
-}
-
-.chart-container {
-  margin-bottom: 20px;
-}
-
-.chart-container h3 {
-  color: rgb(214, 216, 218);
-  font-size: 1rem;
-  margin-bottom: 10px;
-}
-
-.chart-svg {
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background-color: rgba(255, 255, 255, 0.03);
-  border-radius: 4px;
-}
-
-.chart-label {
-  font-size: 10px;
-  color: rgba(214, 216, 218, 0.7);
-}
-
-.no-data-message {
-  padding: 20px;
-  text-align: center;
-  background-color: rgba(255, 255, 255, 0.05);
-  border-radius: 8px;
-  color: rgb(214, 216, 218);
+@media (max-width: 360px) {
+  /* Extra small devices adjustments */
 }
