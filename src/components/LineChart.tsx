@@ -99,7 +99,7 @@ const LineChart: React.FC<LineChartProps> = ({
             const yPosition = height - ratio * (height - 30) - 10;
             return (
               <line
-                key={i}
+                key={i.toString() + ratio.toString()}
                 x1="0"
                 y1={yPosition}
                 x2={chartWidth}
@@ -120,7 +120,7 @@ const LineChart: React.FC<LineChartProps> = ({
             ) {
               return (
                 <text
-                  key={i}
+                  key={i.toString() + label}
                   x={i * step}
                   y={height - 2}
                   fontSize="8"
@@ -155,7 +155,13 @@ const LineChart: React.FC<LineChartProps> = ({
 
           {/* Data points */}
           {coordsForLine.map(([x, y], i) => (
-            <circle key={i} cx={String(x)} cy={String(y)} r="3" fill={color} />
+            <circle
+              key={i.toString() + String(y) + String(x)}
+              cx={String(x)}
+              cy={String(y)}
+              r="3"
+              fill={color}
+            />
           ))}
         </svg>
 

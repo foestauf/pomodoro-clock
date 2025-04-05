@@ -1,6 +1,6 @@
 import {
   createContext,
-  useContext,
+  use,
   useState,
   useRef,
   useEffect,
@@ -117,7 +117,7 @@ export function TimerProvider({ children }: { children: ReactNode }) {
 
       // Handle the promise returned by play() method
       if (audioBeep.current) {
-        void audioBeep.current.play().catch((err: unknown) => {
+        audioBeep.current.play().catch((err: unknown) => {
           console.error("Error playing audio:", err);
         });
       }
@@ -308,15 +308,15 @@ export function TimerProvider({ children }: { children: ReactNode }) {
   );
 
   return (
-    <TimerContext.Provider value={contextValue}>
+    <TimerContext value={contextValue}>
       {children}
-    </TimerContext.Provider>
+    </TimerContext>
   );
 }
 
 // Custom hook for using the timer context
 export function useTimer() {
-  const context = useContext(TimerContext);
+  const context = use(TimerContext);
   if (context === undefined) {
     throw new Error("useTimer must be used within a TimerProvider");
   }
