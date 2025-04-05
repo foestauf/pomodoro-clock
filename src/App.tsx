@@ -15,6 +15,7 @@ const AppContent: React.FC = () => {
   return (
     <div className="App">
       <div className="app-container">
+        <ThemeToggle />
         <AnalyticsSidebar key={sessionCount} />
         <div className="main-content">
           <div className="mobile-layout">

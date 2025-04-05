@@ -56,9 +56,11 @@ body {
   max-width: 300px;
 }
 
+/* Clock styles */
 .clock-face {
-  font-family: digital-clock;
+  font-family: "digital-clock", monospace;
   font-size: 6rem;
+  color: var(--app-text);
 }
 
 #current-time.clock-face {

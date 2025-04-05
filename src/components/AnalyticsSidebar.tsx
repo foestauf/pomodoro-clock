@@ -61,7 +61,7 @@ const LineChart: React.FC<LineChartProps> = ({
   const points = data.values
     .map((value, i) => {
       const x = i * step;
-      const y = height - ((value - min) / range) * (height - 30) - 10;
+      const y = height - ((value - min) / range) * (height - 30) - 10; // Leave space for labels
       return `${x},${y}`;
     })
     .join(" ");
