@@ -9,6 +9,12 @@ import {
   useMemo,
 } from "react";
 import { startSession, endSession } from "../services/analyticsService";
+import { 
+  trackTimerEvent, 
+  trackSettingsChange, 
+  trackSessionAnalytics,
+  trackError 
+} from "../services/telemetryService";
 
 // Define enums
 export enum TimerState {
@@ -87,22 +93,38 @@ export function TimerProvider({ children }: { children: ReactNode }) {
 
   // Save settings to local storage whenever they change
   useEffect(() => {
+    const oldValue = localStorage.getItem("breakLength");
     localStorage.setItem("breakLength", breakLength.toString());
+    if (oldValue && oldValue !== breakLength.toString()) {
+      trackSettingsChange("break_length", oldValue, breakLength);
+    }
   }, [breakLength]);
 
   useEffect(() => {
+    const oldValue = localStorage.getItem("sessionLength");
     localStorage.setItem("sessionLength", sessionLength.toString());
+    if (oldValue && oldValue !== sessionLength.toString()) {
+      trackSettingsChange("session_length", oldValue, sessionLength);
+    }
   }, [sessionLength]);
 
   useEffect(() => {
+    const oldValue = localStorage.getItem("longBreakLength");
     localStorage.setItem("longBreakLength", longBreakLength.toString());
+    if (oldValue && oldValue !== longBreakLength.toString()) {
+      trackSettingsChange("long_break_length", oldValue, longBreakLength);
+    }
   }, [longBreakLength]);
 
   useEffect(() => {
+    const oldValue = localStorage.getItem("sessionsBeforeLongBreak");
     localStorage.setItem(
       "sessionsBeforeLongBreak",
       sessionsBeforeLongBreak.toString()
     );
+    if (oldValue && oldValue !== sessionsBeforeLongBreak.toString()) {
+      trackSettingsChange("sessions_before_long_break", oldValue, sessionsBeforeLongBreak);
+    }
   }, [sessionsBeforeLongBreak]);
 
   // Handle timer completion
@@ -119,12 +141,20 @@ export function TimerProvider({ children }: { children: ReactNode }) {
       if (audioBeep.current) {
         audioBeep.current.play().catch((err: unknown) => {
           console.error("Error playing audio:", err);
+          trackError(new Error("Audio playback failed"), "timer_completion", {
+            error: err instanceof Error ? err.message : String(err),
+          });
         });
       }
 
       if (timerType === TimerType.Session) {
         // Session ended
         endSession(); // End analytics session
+        trackTimerEvent('complete', 'session', undefined, sessionLength, breakLength);
+        trackSessionAnalytics('session_completed', {
+          session_length_minutes: sessionLength,
+          break_length_minutes: breakLength,
+        });
         setSessionCount((prev) => prev + 1); // Increment analytics session count
         const nextSessionCount = completedSessionCycleCount + 1;
         if (nextSessionCount >= sessionsBeforeLongBreak) {
@@ -132,17 +162,26 @@ export function TimerProvider({ children }: { children: ReactNode }) {
           setTimerType(TimerType.LongBreak);
           setTimer(longBreakLength * 60);
           setCompletedSessionCycleCount(0); // Reset cycle count
+          trackTimerEvent('start', 'long_break', longBreakLength * 60, sessionLength, breakLength);
         } else {
           // Start Short Break
           setTimerType(TimerType.Break);
           setTimer(breakLength * 60);
           setCompletedSessionCycleCount(nextSessionCount);
+          trackTimerEvent('start', 'break', breakLength * 60, sessionLength, breakLength);
         }
       } else {
         // Break or Long Break ended, start next session
+        const breakType = timerType === TimerType.LongBreak ? 'long_break' : 'break';
+        trackTimerEvent('complete', breakType, undefined, sessionLength, breakLength);
         setTimerType(TimerType.Session);
         setTimer(sessionLength * 60);
         startSession(); // Start analytics session
+        trackTimerEvent('start', 'session', sessionLength * 60, sessionLength, breakLength);
+        trackSessionAnalytics('session_started', {
+          session_length_minutes: sessionLength,
+          break_length_minutes: breakLength,
+        });
       }
     }
   }, [
@@ -190,14 +229,21 @@ export function TimerProvider({ children }: { children: ReactNode }) {
     audioBeep.current?.pause();
     if (audioBeep.current) audioBeep.current.currentTime = 0;
 
+    // Track reset event
+    trackTimerEvent('reset', 'session', undefined, sessionLength, breakLength);
+
     // End the current analytics session if timer was running when reset
     if (timerState === TimerState.Running) {
       endSession();
+      trackSessionAnalytics('session_interrupted', {
+        reason: 'reset',
+        remaining_time_seconds: timer,
+      });
     }
 
     // Reset analytics session count display key
     setSessionCount(0);
-  }, [timerState]);
+  }, [timerState, timer, sessionLength, breakLength]);
 
   // Start/stop the timer
   const timerControl = useCallback(() => {
@@ -211,9 +257,19 @@ export function TimerProvider({ children }: { children: ReactNode }) {
       }, 1000);
       intervalID.current = countdown as unknown as number;
       setTimerState(TimerState.Running);
+      
+      // Track timer start event
+      const timerTypeString = timerType === TimerType.Session ? 'session' : 
+                            timerType === TimerType.LongBreak ? 'long_break' : 'break';
+      trackTimerEvent('start', timerTypeString, timer, sessionLength, breakLength);
+      
       // Only start analytics session if timer is for a work session
       if (timerType === TimerType.Session) {
         startSession(); // Start tracking the session
+        trackSessionAnalytics('session_started', {
+          session_length_minutes: sessionLength,
+          break_length_minutes: breakLength,
+        });
       }
     } else {
       // Stop the timer and record the session end
@@ -222,14 +278,24 @@ export function TimerProvider({ children }: { children: ReactNode }) {
       }
       intervalID.current = null;
       setTimerState(TimerState.Stopped);
+      
+      // Track timer stop event
+      const timerTypeString = timerType === TimerType.Session ? 'session' : 
+                            timerType === TimerType.LongBreak ? 'long_break' : 'break';
+      trackTimerEvent('stop', timerTypeString, timer, sessionLength, breakLength);
+      
       // Only end analytics session if timer was running for a work session
       if (timerType === TimerType.Session) {
         endSession();
+        trackSessionAnalytics('session_interrupted', {
+          reason: 'user_stopped',
+          remaining_time_seconds: timer,
+        });
         // Force a session count update to trigger UI refresh
         setSessionCount((prev) => prev + 1);
       }
     }
-  }, [timerState, timerType]);
+  }, [timerState, timerType, timer, sessionLength, breakLength]);
 
   // Switch to break mode
   const switchToBreak = useCallback(() => {
@@ -241,7 +307,10 @@ export function TimerProvider({ children }: { children: ReactNode }) {
     setTimerState(TimerState.Stopped);
     setTimerType(TimerType.Break);
     setTimer(breakLength * 60);
-  }, [breakLength]);
+    
+    // Track mode switch
+    trackTimerEvent('start', 'break', breakLength * 60, sessionLength, breakLength);
+  }, [breakLength, sessionLength]);
 
   // Switch to session mode
   const switchToSession = useCallback(() => {
@@ -253,7 +322,10 @@ export function TimerProvider({ children }: { children: ReactNode }) {
     setTimerState(TimerState.Stopped);
     setTimerType(TimerType.Session);
     setTimer(sessionLength * 60);
-  }, [sessionLength]);
+    
+    // Track mode switch
+    trackTimerEvent('start', 'session', sessionLength * 60, sessionLength, breakLength);
+  }, [sessionLength, breakLength]);
 
   // Get control icon
   const controlIcon = useCallback(

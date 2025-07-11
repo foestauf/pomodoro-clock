@@ -1,4 +1,5 @@
 import { Dispatch, SetStateAction } from "react";
+import { trackUserInteraction } from "../services/telemetryService";
 
 interface TimerLengthControlProps {
   title: string;
@@ -20,7 +21,16 @@ const TimerLengthControl: React.FC<TimerLengthControlProps> = ({
   minID,
 }) => {
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    onClick(e.currentTarget.value === "+" ? length + 1 : length - 1);
+    const action = e.currentTarget.value === "+" ? "increment" : "decrement";
+    const newValue = e.currentTarget.value === "+" ? length + 1 : length - 1;
+    
+    trackUserInteraction(
+      `${action}_${title.toLowerCase().replace(/\s+/g, '_')}`,
+      `${action}_button`,
+      `${length.toString()}_to_${newValue.toString()}`
+    );
+    
+    onClick(newValue);
   };
 
   return (

@@ -2,6 +2,7 @@ import React from "react";
 import { useResponsive } from "../hooks/useResponsive";
 import { useAnalyticsData } from "../hooks/useAnalyticsData";
 import LineChart from "./LineChart";
+import { trackUserInteraction } from "../services/telemetryService";
 
 const getSidebarClass = (isMobile: boolean, isMenuOpen: boolean): string => {
   if (isMobile) {
@@ -30,7 +31,10 @@ const AnalyticsSidebar: React.FC = () => {
       {isMobile && (
         <button
           className="burger-menu-button"
-          onClick={toggleMenu}
+          onClick={() => {
+            trackUserInteraction('menu_toggle', 'burger_menu', isMenuOpen ? 'close' : 'open');
+            toggleMenu();
+          }}
           aria-label="Toggle analytics menu"
         >
           <div className={`burger-icon ${isMenuOpen ? "open" : ""}`}>
@@ -44,7 +48,10 @@ const AnalyticsSidebar: React.FC = () => {
       {isMobile && isMenuOpen && (
         <button
           className="sidebar-overlay"
-          onClick={toggleMenu}
+          onClick={() => {
+            trackUserInteraction('menu_close', 'sidebar_overlay', 'close');
+            toggleMenu();
+          }}
           aria-label="Close analytics sidebar"
         ></button>
       )}
@@ -73,14 +80,20 @@ const AnalyticsSidebar: React.FC = () => {
 
         <div style={{ display: "flex", marginBottom: "16px" }}>
           <button
-            onClick={() => { setActiveTab("daily"); }}
+            onClick={() => { 
+              trackUserInteraction('tab_switch', 'daily_tab', 'daily');
+              setActiveTab("daily"); 
+            }}
             className={`tab-button ${activeTab === "daily" ? "active" : ""}`}
             data-testid="daily-tab"
           >
             Daily
           </button>
           <button
-            onClick={() => { setActiveTab("sessions"); }}
+            onClick={() => { 
+              trackUserInteraction('tab_switch', 'sessions_tab', 'sessions');
+              setActiveTab("sessions"); 
+            }}
             className={`tab-button ${activeTab === "sessions" ? "active" : ""}`}
             data-testid="sessions-tab"
           >
