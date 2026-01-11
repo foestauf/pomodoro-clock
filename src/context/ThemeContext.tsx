@@ -1,4 +1,4 @@
-import { createContext, use, useEffect, useState } from "react";
+import { createContext, use, useEffect, useMemo, useState } from "react";
 import { ThemeMode, getThemePreference } from "../styles/theme";
 
 interface ThemeContextType {
@@ -37,8 +37,13 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
     });
   };
 
+  const contextValue = useMemo(
+    () => ({ theme, toggleTheme }),
+    [theme]
+  );
+
   return (
-    <ThemeContext value={{ theme, toggleTheme }}>
+    <ThemeContext value={contextValue}>
       {children}
     </ThemeContext>
   );

@@ -7,10 +7,10 @@ const TimerControls: React.FC = () => {
 
   return (
     <div id="timer-control">
-      <button id="start_stop" className="timer-button" onClick={timerControl}>
+      <button type="button" id="start_stop" className="timer-button" onClick={timerControl}>
         <i className={controlIcon()} />
       </button>
-      <button id="reset" className="timer-button" onClick={handleReset}>
+      <button type="button" id="reset" className="timer-button" onClick={handleReset}>
         <i className="fa fa-refresh fa-2x" />
       </button>
     </div>

@@ -51,39 +51,35 @@ const TimerContext = createContext<TimerContextType | undefined>(undefined);
 
 // Provider component
 export function TimerProvider({ children }: { children: ReactNode }) {
-  const [timer, setTimer] = useState(25 * 60);
+  const [breakLength, setBreakLength] = useState(() => {
+    const stored = localStorage.getItem("breakLength");
+    return stored ? parseInt(stored, 10) : 5;
+  });
+  const [sessionLength, setSessionLength] = useState(() => {
+    const stored = localStorage.getItem("sessionLength");
+    return stored ? parseInt(stored, 10) : 25;
+  });
+  const [longBreakLength, setLongBreakLength] = useState(() => {
+    const stored = localStorage.getItem("longBreakLength");
+    return stored ? parseInt(stored, 10) : 15;
+  });
+  const [sessionsBeforeLongBreak, setSessionsBeforeLongBreak] = useState(() => {
+    const stored = localStorage.getItem("sessionsBeforeLongBreak");
+    return stored ? parseInt(stored, 10) : 4;
+  });
+
+  const [timer, setTimer] = useState(() => {
+    const stored = localStorage.getItem("sessionLength");
+    return (stored ? parseInt(stored, 10) : 25) * 60;
+  });
   const [timerState, setTimerState] = useState<TimerState>(TimerState.Stopped);
-  const [breakLength, setBreakLength] = useState(5);
-  const [sessionLength, setSessionLength] = useState(25);
   const [timerType, setTimerType] = useState<TimerType>(TimerType.Session);
   const [sessionCount, setSessionCount] = useState(0); // For analytics key
-  const [longBreakLength, setLongBreakLength] = useState(15);
-  const [sessionsBeforeLongBreak, setSessionsBeforeLongBreak] = useState(4);
   const [completedSessionCycleCount, setCompletedSessionCycleCount] =
     useState(0); // Tracks sessions for long break cycle
 
   const intervalID = useRef<number | null>(null);
   const audioBeep = useRef<HTMLAudioElement>(null);
-
-  // Load settings from local storage on initial mount
-  useEffect(() => {
-    const storedBreakLength = localStorage.getItem("breakLength");
-    if (storedBreakLength) setBreakLength(parseInt(storedBreakLength, 10));
-
-    const storedSessionLength = localStorage.getItem("sessionLength");
-    if (storedSessionLength)
-      setSessionLength(parseInt(storedSessionLength, 10));
-
-    const storedLongBreakLength = localStorage.getItem("longBreakLength");
-    if (storedLongBreakLength)
-      setLongBreakLength(parseInt(storedLongBreakLength, 10));
-
-    const storedSessionsBeforeLongBreak = localStorage.getItem(
-      "sessionsBeforeLongBreak"
-    );
-    if (storedSessionsBeforeLongBreak)
-      setSessionsBeforeLongBreak(parseInt(storedSessionsBeforeLongBreak, 10));
-  }, []);
 
   // Save settings to local storage whenever they change
   useEffect(() => {
@@ -113,6 +109,7 @@ export function TimerProvider({ children }: { children: ReactNode }) {
         clearInterval(intervalID.current);
       }
       intervalID.current = null;
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- Intentional: handling timer completion requires state transition
       setTimerState(TimerState.Stopped);
 
       // Handle the promise returned by play() method
@@ -158,6 +155,7 @@ export function TimerProvider({ children }: { children: ReactNode }) {
   // Update timer when session length changes
   useEffect(() => {
     if (timerType === TimerType.Session) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- Intentional: sync timer with session length changes
       setTimer(sessionLength * 60);
     }
   }, [sessionLength, timerType]);
