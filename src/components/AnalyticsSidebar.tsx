@@ -29,6 +29,7 @@ const AnalyticsSidebar: React.FC = () => {
     <>
       {isMobile && (
         <button
+          type="button"
           className="burger-menu-button"
           onClick={toggleMenu}
           aria-label="Toggle analytics menu"
@@ -43,6 +44,7 @@ const AnalyticsSidebar: React.FC = () => {
 
       {isMobile && isMenuOpen && (
         <button
+          type="button"
           className="sidebar-overlay"
           onClick={toggleMenu}
           aria-label="Close analytics sidebar"
@@ -73,6 +75,7 @@ const AnalyticsSidebar: React.FC = () => {
 
         <div style={{ display: "flex", marginBottom: "16px" }}>
           <button
+            type="button"
             onClick={() => { setActiveTab("daily"); }}
             className={`tab-button ${activeTab === "daily" ? "active" : ""}`}
             data-testid="daily-tab"
@@ -80,6 +83,7 @@ const AnalyticsSidebar: React.FC = () => {
             Daily
           </button>
           <button
+            type="button"
             onClick={() => { setActiveTab("sessions"); }}
             className={`tab-button ${activeTab === "sessions" ? "active" : ""}`}
             data-testid="sessions-tab"

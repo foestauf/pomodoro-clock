@@ -30,6 +30,7 @@ const TimerLengthControl: React.FC<TimerLengthControlProps> = ({
       </div>
       <div className="control-buttons">
         <button
+          type="button"
           id={minID}
           className="btn-level timer-button"
           value="-"
@@ -41,6 +42,7 @@ const TimerLengthControl: React.FC<TimerLengthControlProps> = ({
           {length}
         </div>
         <button
+          type="button"
           id={addID}
           className="btn-level timer-button"
           value="+"
