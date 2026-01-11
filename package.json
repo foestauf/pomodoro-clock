@@ -16,7 +16,6 @@
     "babel-plugin-react-compiler": "^19.0.0-beta-37ed2a7-20241206",
     "font-awesome": "^4.7.0",
     "react": "^19.0.0",
-    "react-compiler-runtime": "^19.0.0-beta-37ed2a7-20241206",
     "react-dom": "^19.0.0"
   },
   "devDependencies": {
