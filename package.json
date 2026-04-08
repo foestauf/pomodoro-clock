@@ -19,7 +19,7 @@
     "react-dom": "^19.0.0"
   },
   "devDependencies": {
-    "@eslint-react/eslint-plugin": "^2.0.0",
+    "@eslint-react/eslint-plugin": "^4.0.0",
     "@eslint/js": "^9.16.0",
     "@playwright/test": "^1.51.1",
     "@types/node": "^24.0.0",
