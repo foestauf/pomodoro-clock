@@ -1,6 +1,5 @@
 // @ts-check
 
-import reactCompiler from "eslint-plugin-react-compiler";
 import eslint from "@eslint/js";
 import eslintReact from "@eslint-react/eslint-plugin";
 import tseslint from "typescript-eslint";
@@ -15,11 +14,8 @@ export default tseslint.config(
   tseslint.configs.strictTypeChecked,
   tseslint.configs.stylisticTypeChecked,
   eslintReact.configs["recommended-type-checked"],
+  hooksPlugin.configs.flat.recommended,
   {
-    plugins: {
-      "react-compiler": reactCompiler,
-      "react-hooks": hooksPlugin,
-    },
     languageOptions: {
       parser: tsParser,
       parserOptions: {
@@ -30,9 +26,6 @@ export default tseslint.config(
       sourceType: "module",
     },
     rules: {
-      "react-compiler/react-compiler": "error",
-      ...hooksPlugin.configs.recommended.rules,
-      "react-hooks/rules-of-hooks": "error",
       "react-hooks/exhaustive-deps": "warn",
       "@eslint-react/hooks-extra/no-direct-set-state-in-use-effect": "off",
     },

@@ -18,28 +18,30 @@ A simple Pomodoro Clock application with session analytics.
 
 ## Development
 
+This project uses [pnpm](https://pnpm.io) as its package manager.
+
 ### Installation
 
 ```bash
-npm install
+pnpm install
 ```
 
 ### Running the app
 
 ```bash
-npm run dev
+pnpm dev
 ```
 
 ### Building for production
 
 ```bash
-npm run build
+pnpm build
 ```
 
 ### Running tests
 
 ```bash
-npm test
+pnpm test
 ```
 
 ## Styling with Tailwind CSS 4
