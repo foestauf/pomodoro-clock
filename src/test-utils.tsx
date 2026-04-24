@@ -9,22 +9,33 @@ interface Options extends Omit<RenderOptions, "wrapper"> {
   providers?: readonly Providers[];
 }
 
+function ProviderWrapper({
+  children,
+  providers,
+}: {
+  children: ReactNode;
+  providers: readonly Providers[];
+}) {
+  let tree = children;
+  if (providers.includes("theme")) {
+    tree = <ThemeProvider>{tree}</ThemeProvider>;
+  }
+  if (providers.includes("timer")) {
+    tree = <TimerProvider>{tree}</TimerProvider>;
+  }
+  return <>{tree}</>;
+}
+
 export function renderWithProviders(
   ui: ReactElement,
   { providers = ["timer", "theme"], ...options }: Options = {}
 ) {
-  const Wrapper = ({ children }: { children: ReactNode }) => {
-    let tree = children;
-    if (providers.includes("theme")) {
-      tree = <ThemeProvider>{tree}</ThemeProvider>;
-    }
-    if (providers.includes("timer")) {
-      tree = <TimerProvider>{tree}</TimerProvider>;
-    }
-    return <>{tree}</>;
-  };
-
-  return render(ui, { wrapper: Wrapper, ...options });
+  return render(ui, {
+    wrapper: ({ children }) => (
+      <ProviderWrapper providers={providers}>{children}</ProviderWrapper>
+    ),
+    ...options,
+  });
 }
 
 /** Strict querySelector — throws if no element matches, returning a narrowed
