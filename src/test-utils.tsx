@@ -26,3 +26,11 @@ export function renderWithProviders(
 
   return render(ui, { wrapper: Wrapper, ...options });
 }
+
+/** Strict querySelector — throws if no element matches, returning a narrowed
+ * HTMLElement so callers don't need a non-null assertion. */
+export function $el(selector: string): HTMLElement {
+  const el = document.querySelector<HTMLElement>(selector);
+  if (!el) throw new Error(`No element matches selector: ${selector}`);
+  return el;
+}

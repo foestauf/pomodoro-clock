@@ -12,6 +12,8 @@ jobs:
   playwright-tests:
     timeout-minutes: 20
     runs-on: ubuntu-latest
+    env:
+      PROJECT: ${{ inputs.project }}
     steps:
       - uses: actions/checkout@v6
       - name: Set up pnpm
@@ -34,20 +36,20 @@ jobs:
       - name: Install Playwright Browsers
         if: steps.playwright-cache.outputs.cache-hit != 'true'
         run: |
-          if [ "${{ inputs.project }}" = "all" ]; then
+          if [ "$PROJECT" = "all" ]; then
             pnpm exec playwright install --with-deps
           else
-            pnpm exec playwright install --with-deps ${{ inputs.project }}
+            pnpm exec playwright install --with-deps "$PROJECT"
           fi
       - name: Install Playwright deps (cached browsers)
         if: steps.playwright-cache.outputs.cache-hit == 'true'
         run: pnpm exec playwright install-deps
       - name: Run Playwright tests
         run: |
-          if [ "${{ inputs.project }}" = "all" ]; then
+          if [ "$PROJECT" = "all" ]; then
             pnpm exec playwright test
           else
-            pnpm exec playwright test --project=${{ inputs.project }}
+            pnpm exec playwright test --project="$PROJECT"
           fi
       - uses: actions/upload-artifact@v7
         if: always()

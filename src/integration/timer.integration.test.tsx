@@ -101,7 +101,8 @@ describe("keyboard shortcuts integration", () => {
 
   const press = (key: string) => {
     act(() => {
-      fireEvent.keyDown(window, { key });
+      // Source component listens on window; document bubbles up to it.
+      fireEvent.keyDown(document, { key });
     });
   };
 

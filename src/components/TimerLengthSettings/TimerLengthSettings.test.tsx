@@ -1,44 +1,44 @@
 import { describe, it, expect } from "vitest";
 import userEvent from "@testing-library/user-event";
 import TimerLengthSettings from "./TimerLengthSettings";
-import { renderWithProviders } from "../../test-utils";
+import { renderWithProviders, $el } from "../../test-utils";
 
 describe("TimerLengthSettings", () => {
   it("renders default session and break lengths", () => {
     renderWithProviders(<TimerLengthSettings />, { providers: ["timer"] });
-    expect(document.querySelector("#session-length")).toHaveTextContent("25");
-    expect(document.querySelector("#break-length")).toHaveTextContent("5");
+    expect($el("#session-length")).toHaveTextContent("25");
+    expect($el("#break-length")).toHaveTextContent("5");
   });
 
   it("decrements session length by one", async () => {
     const user = userEvent.setup();
     renderWithProviders(<TimerLengthSettings />, { providers: ["timer"] });
 
-    await user.click(document.querySelector("#session-decrement")!);
-    expect(document.querySelector("#session-length")).toHaveTextContent("24");
+    await user.click($el("#session-decrement"));
+    expect($el("#session-length")).toHaveTextContent("24");
   });
 
   it("increments session length by one", async () => {
     const user = userEvent.setup();
     renderWithProviders(<TimerLengthSettings />, { providers: ["timer"] });
 
-    await user.click(document.querySelector("#session-increment")!);
-    expect(document.querySelector("#session-length")).toHaveTextContent("26");
+    await user.click($el("#session-increment"));
+    expect($el("#session-length")).toHaveTextContent("26");
   });
 
   it("decrements break length by one", async () => {
     const user = userEvent.setup();
     renderWithProviders(<TimerLengthSettings />, { providers: ["timer"] });
 
-    await user.click(document.querySelector("#break-decrement")!);
-    expect(document.querySelector("#break-length")).toHaveTextContent("4");
+    await user.click($el("#break-decrement"));
+    expect($el("#break-length")).toHaveTextContent("4");
   });
 
   it("increments break length by one", async () => {
     const user = userEvent.setup();
     renderWithProviders(<TimerLengthSettings />, { providers: ["timer"] });
 
-    await user.click(document.querySelector("#break-increment")!);
-    expect(document.querySelector("#break-length")).toHaveTextContent("6");
+    await user.click($el("#break-increment"));
+    expect($el("#break-length")).toHaveTextContent("6");
   });
 });
