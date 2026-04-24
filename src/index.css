@@ -1,25 +1,34 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
-@layer base {
-  :root {
-    --app-bg: #ffffff;
-    --app-sidebar: #f4f4f5;
-    --app-text: #18181b;
-    --app-accent: #3b82f6;
-    --app-break: #ff9800;
-    --app-session: #4caf50;
-  }
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 
-  [data-theme="dark"] {
-    --app-bg: #24292e;
-    --app-sidebar: #2d3339;
-    --app-text: rgb(214, 216, 218);
-    --app-accent: #3b82f6;
-    --app-break: #ff9800;
-    --app-session: #4caf50;
-  }
+@theme {
+  --font-digital: "digital-clock", monospace;
+
+  --color-app-bg: var(--app-bg);
+  --color-app-sidebar: var(--app-sidebar);
+  --color-app-text: var(--app-text);
+  --color-app-accent: var(--app-accent);
+  --color-app-break: var(--app-break);
+  --color-app-session: var(--app-session);
+}
+
+:root {
+  --app-bg: #ffffff;
+  --app-sidebar: #f4f4f5;
+  --app-text: #18181b;
+  --app-accent: #3b82f6;
+  --app-break: #ff9800;
+  --app-session: #4caf50;
+}
+
+[data-theme="dark"] {
+  --app-bg: #24292e;
+  --app-sidebar: #2d3339;
+  --app-text: rgb(214, 216, 218);
+  --app-accent: #3b82f6;
+  --app-break: #ff9800;
+  --app-session: #4caf50;
 }
 
 @font-face {
@@ -28,7 +37,9 @@
 }
 
 * {
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
 }
 
 body {
