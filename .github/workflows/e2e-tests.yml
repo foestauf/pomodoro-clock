@@ -1,10 +1,16 @@
 name: Playwright Tests
 on:
   workflow_call:
+    inputs:
+      project:
+        description: 'Playwright project to run (chromium, firefox, webkit, or all)'
+        type: string
+        default: 'chromium'
+        required: false
 
 jobs:
   playwright-tests:
-    timeout-minutes: 60
+    timeout-minutes: 20
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
@@ -24,18 +30,29 @@ jobs:
         uses: actions/cache@v5
         with:
           path: ~/.cache/ms-playwright
-          key: playwright-${{ runner.os }}-${{ steps.playwright-version.outputs.version }}
-      - name: Install Playwright Browsers
-        if: steps.playwright-cache.outputs.cache-hit != 'true'
+          key: playwright-${{ runner.os }}-${{ steps.playwright-version.outputs.version }}-${{ inputs.project }}
+      - name: Install all browsers
+        if: steps.playwright-cache.outputs.cache-hit != 'true' && inputs.project == 'all'
         run: pnpm exec playwright install --with-deps
+      - name: Install single browser
+        if: steps.playwright-cache.outputs.cache-hit != 'true' && inputs.project != 'all'
+        env:
+          PROJECT: ${{ inputs.project }}
+        run: pnpm exec playwright install --with-deps "$PROJECT"
       - name: Install Playwright deps (cached browsers)
         if: steps.playwright-cache.outputs.cache-hit == 'true'
         run: pnpm exec playwright install-deps
-      - name: Run Playwright tests
+      - name: Run all browsers
+        if: inputs.project == 'all'
         run: pnpm exec playwright test
+      - name: Run single browser
+        if: inputs.project != 'all'
+        env:
+          PROJECT: ${{ inputs.project }}
+        run: pnpm exec playwright test --project="$PROJECT"
       - uses: actions/upload-artifact@v7
         if: always()
         with:
-          name: playwright-report
+          name: playwright-report-${{ inputs.project }}
           path: playwright-report/
           retention-days: 30

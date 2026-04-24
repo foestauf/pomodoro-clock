@@ -22,8 +22,9 @@
     // Will remove once JS is gone
     "allowJs": true,
     "checkJs": false,
-    "noImplicitAny": false
+    "noImplicitAny": false,
+    "types": ["vitest/globals", "@testing-library/jest-dom"]
   },
-  "include": ["src", "e2e"],
+  "include": ["src", "e2e", "vitest.setup.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

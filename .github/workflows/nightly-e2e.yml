@@ -1,0 +1,13 @@
+name: Nightly Cross-Browser E2E
+
+on:
+  schedule:
+    # 07:00 UTC daily
+    - cron: '0 7 * * *'
+  workflow_dispatch:
+
+jobs:
+  e2e-full-matrix:
+    uses: ./.github/workflows/e2e-tests.yml
+    with:
+      project: all
