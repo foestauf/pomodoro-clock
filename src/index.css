@@ -3,67 +3,95 @@
 @custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 
 @theme {
-  --font-digital: "digital-clock", monospace;
+  --font-sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 
   --color-app-bg: var(--app-bg);
-  --color-app-sidebar: var(--app-sidebar);
-  --color-app-text: var(--app-text);
+  --color-app-bg-2: var(--app-bg-2);
+  --color-app-sidebar: var(--app-bg);
+  --color-app-ink: var(--app-ink);
+  --color-app-ink-2: var(--app-ink-2);
+  --color-app-ink-3: var(--app-ink-3);
+  --color-app-line: var(--app-line);
+  --color-app-line-2: var(--app-line-2);
   --color-app-accent: var(--app-accent);
   --color-app-break: var(--app-break);
-  --color-app-session: var(--app-session);
+  --color-app-long: var(--app-long);
+
+  /* legacy aliases */
+  --color-app-text: var(--app-ink);
+  --color-app-session: var(--app-accent);
 }
 
 :root {
-  --app-bg: #ffffff;
-  --app-sidebar: #f4f4f5;
-  --app-text: #18181b;
-  --app-accent: #3b82f6;
-  --app-break: #ff9800;
-  --app-session: #4caf50;
+  --app-bg: oklch(0.985 0.004 70);
+  --app-bg-2: oklch(0.965 0.006 70);
+  --app-ink: oklch(0.18 0.008 70);
+  --app-ink-2: oklch(0.38 0.008 70);
+  --app-ink-3: oklch(0.58 0.008 70);
+  --app-line: oklch(0.88 0.006 70);
+  --app-line-2: oklch(0.92 0.005 70);
+  --app-accent: oklch(0.62 0.18 28);
+  --app-accent-soft: oklch(0.62 0.18 28 / 0.12);
+  --app-break: oklch(0.62 0.07 150);
+  --app-break-soft: oklch(0.62 0.07 150 / 0.14);
+  --app-long: oklch(0.55 0.12 240);
+  --app-long-soft: oklch(0.55 0.12 240 / 0.14);
+
+  /* legacy aliases used by older components */
+  --app-text: var(--app-ink);
+  --app-sidebar: var(--app-bg);
+  --app-session: var(--app-accent);
 }
 
 [data-theme="dark"] {
-  --app-bg: #24292e;
-  --app-sidebar: #2d3339;
-  --app-text: rgb(214, 216, 218);
-  --app-accent: #3b82f6;
-  --app-break: #ff9800;
-  --app-session: #4caf50;
+  --app-bg: oklch(0.18 0.008 70);
+  --app-bg-2: oklch(0.22 0.008 70);
+  --app-ink: oklch(0.96 0.004 70);
+  --app-ink-2: oklch(0.78 0.006 70);
+  --app-ink-3: oklch(0.58 0.008 70);
+  --app-line: oklch(0.30 0.008 70);
+  --app-line-2: oklch(0.26 0.008 70);
 }
 
-@font-face {
-  font-family: "digital-clock";
-  src: local("digital-clock"), url("./assets/digital-7.ttf");
-}
-
-* {
-  transition:
-    background-color 0.3s ease,
-    color 0.3s ease;
+html,
+body {
+  margin: 0;
+  padding: 0;
 }
 
 body {
   background: var(--app-bg);
-  color: var(--app-text);
+  color: var(--app-ink);
+  font-family: var(--font-sans);
+  font-feature-settings: "ss01", "cv11";
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
 }
 
-code {
-  font-family: monospace;
+button {
+  font-family: inherit;
+  color: inherit;
 }
 
 #root {
-  height: 100vh;
+  min-height: 100vh;
 }
 
-#current-time {
-  height: 15%;
+code {
+  font-family: var(--font-mono);
 }
 
-#main-display {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 35%;
+/* Screen-reader-only utility — used to keep legacy testable elements in the DOM */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }

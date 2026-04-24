@@ -39,6 +39,7 @@ interface TimerContextType {
   timerControl: () => void;
   switchToBreak: () => void;
   switchToSession: () => void;
+  switchToLongBreak: () => void;
   controlIcon: () => string;
   setBreakLength: (length: number) => void;
   setSessionLength: (length: number) => void;
@@ -253,6 +254,17 @@ export function TimerProvider({ children }: { children: ReactNode }) {
     setTimer(sessionLength * 60);
   }, [sessionLength]);
 
+  // Switch to long break mode
+  const switchToLongBreak = useCallback(() => {
+    if (intervalID.current !== null) {
+      clearInterval(intervalID.current);
+    }
+    intervalID.current = null;
+    setTimerState(TimerState.Stopped);
+    setTimerType(TimerType.LongBreak);
+    setTimer(longBreakLength * 60);
+  }, [longBreakLength]);
+
   // Get control icon
   const controlIcon = useCallback(
     () =>
@@ -280,6 +292,7 @@ export function TimerProvider({ children }: { children: ReactNode }) {
       timerControl,
       switchToBreak,
       switchToSession,
+      switchToLongBreak,
       controlIcon,
       setBreakLength,
       setSessionLength,
@@ -301,6 +314,7 @@ export function TimerProvider({ children }: { children: ReactNode }) {
       timerControl,
       switchToBreak,
       switchToSession,
+      switchToLongBreak,
       controlIcon,
     ]
   );

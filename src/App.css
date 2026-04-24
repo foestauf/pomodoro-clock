@@ -1,141 +1,347 @@
-body {
-  background: var(--app-bg);
-  font-size: 20px;
-  text-align: center;
-  height: 100vh;
-  width: 100vw;
-  color: var(--app-text);
-  margin: 0;
-  padding: 0;
-  overflow-x: hidden;
-}
-
+/* ───────── App shell: sidebar + stage ───────── */
 .App {
-  height: 100vh;
+  min-height: 100vh;
   width: 100%;
 }
 
 .app-container {
-  display: flex;
-  height: 100%;
-  width: 100%;
-  flex-direction: row;
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  min-height: 100vh;
+  background: var(--app-bg);
+}
+
+@media (max-width: 960px) {
+  .app-container {
+    grid-template-columns: 1fr;
+  }
 }
 
 .main-content {
-  flex: 1;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  overflow-y: auto;
-}
-
-/* Page title styling */
-.page-title {
-  font-size: 2rem;
-  margin-bottom: 15px;
-  color: var(--app-text);
-  text-align: center;
-  width: 100%;
-}
-
-.current-time-container {
-  margin: 10px 0 20px;
-  padding: 10px;
-  text-align: center;
   position: relative;
-  z-index: 10;
-  width: 100%;
-  max-width: 300px;
-}
-
-/* Sidebar overlay styling */
-.sidebar-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 50;
-  cursor: pointer;
-  border: none;
-  padding: 0;
-  margin: 0;
-  appearance: none;
-}
-
-/* Clock styles */
-.clock-face {
-  font-family: "digital-clock", monospace;
-  font-size: 6rem;
-  color: var(--app-text);
-}
-
-#current-time.clock-face {
-  font-size: 3.5rem;
-  line-height: 1;
-  margin-top: 5px;
-}
-
-.mobile-layout {
-  width: 100%;
+  padding: 28px 48px 40px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  max-width: 600px;
-}
-
-/* Media Queries for Responsive Design */
-@media (max-width: 1024px) {
-  .clock-face {
-    font-size: 4rem;
-  }
+  min-width: 0;
 }
 
 @media (max-width: 768px) {
-  .app-container {
-    flex-direction: column;
-  }
-
   .main-content {
-    padding: 15px;
-    width: 100%;
-    box-sizing: border-box;
-  }
-
-  .current-time-container {
-    margin-bottom: 10px;
-  }
-
-  .clock-face {
-    font-size: 3.5rem;
+    padding: 20px 20px 28px;
   }
 }
 
-@media (max-width: 480px) {
-  .main-content {
-    padding: 10px;
-  }
+/* ───────── Topbar ───────── */
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding-bottom: 22px;
+  border-bottom: 1px solid var(--app-line);
+}
 
-  /* Page title styling for mobile */
-  .page-title {
-    font-size: 1.5rem;
-    margin-bottom: 10px;
-  }
+.mode-switch {
+  display: inline-flex;
+  padding: 3px;
+  gap: 2px;
+  border: 1px solid var(--app-line);
+  border-radius: 999px;
+  background: var(--app-bg-2);
+}
 
-  /* Adjust font sizes */
-  .clock-face {
-    font-size: 2.5rem;
-  }
+.mode-switch button {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  padding: 7px 16px;
+  border-radius: 999px;
+  font-family: var(--font-sans);
+  font-size: 12.5px;
+  letter-spacing: 0.01em;
+  color: var(--app-ink-2);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
 
-  .current-time-container {
-    margin-bottom: 5px;
+.mode-switch button .ix {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--app-ink-3);
+}
+
+.mode-switch button.on {
+  background: var(--app-ink);
+  color: var(--app-bg);
+}
+
+.mode-switch button.on .ix {
+  color: oklch(1 0 0 / 0.5);
+}
+
+.top-tools {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.kbd-hint {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--app-ink-3);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+@media (max-width: 720px) {
+  .kbd-hint {
+    display: none;
   }
 }
 
-@media (max-width: 360px) {
-  /* Extra small devices adjustments */
+.kbd {
+  display: inline-block;
+  min-width: 18px;
+  text-align: center;
+  padding: 2px 6px;
+  border: 1px solid var(--app-line);
+  border-bottom-width: 2px;
+  border-radius: 5px;
+  background: var(--app-bg-2);
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: var(--app-ink-2);
+}
+
+.icon-btn {
+  appearance: none;
+  border: 1px solid var(--app-line);
+  background: var(--app-bg-2);
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  color: var(--app-ink-2);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition:
+    color 0.2s,
+    border-color 0.2s;
+}
+
+.icon-btn:hover {
+  color: var(--app-ink);
+  border-color: var(--app-ink-3);
+}
+
+/* ───────── Timer stage layout ───────── */
+.timer-wrap {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 48px;
+  align-items: center;
+  padding: 40px 0 24px;
+}
+
+@media (max-width: 1100px) {
+  .timer-wrap {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+}
+
+/* ───────── Right-side panel ───────── */
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.panel h3 {
+  margin: 0 0 10px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--app-ink-3);
+  font-weight: 500;
+}
+
+.task {
+  background: var(--app-bg-2);
+  border: 1px solid var(--app-line);
+  border-radius: 10px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.task input {
+  appearance: none;
+  border: none;
+  background: transparent;
+  outline: none;
+  font-family: var(--font-sans);
+  font-size: 16px;
+  color: var(--app-ink);
+  padding: 2px 0;
+  width: 100%;
+}
+
+.task input::placeholder {
+  color: var(--app-ink-3);
+}
+
+.task-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--app-ink-3);
+}
+
+.task-row .pips {
+  display: inline-flex;
+  gap: 4px;
+}
+
+.pip {
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  background: var(--app-line);
+}
+
+.pip.done {
+  background: var(--app-accent);
+}
+
+.pip.current {
+  background: var(--app-accent);
+  outline: 2px solid var(--app-accent-soft);
+  outline-offset: 1px;
+}
+
+/* ───────── Controls bar ───────── */
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-top: 20px;
+  border-top: 1px solid var(--app-line);
+  flex-wrap: wrap;
+}
+
+.btn {
+  appearance: none;
+  border: 1px solid var(--app-line);
+  background: var(--app-bg-2);
+  padding: 12px 18px;
+  border-radius: 10px;
+  font-family: var(--font-sans);
+  font-size: 13.5px;
+  color: var(--app-ink-2);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition:
+    color 0.2s,
+    border-color 0.2s,
+    background 0.2s;
+}
+
+.btn:hover {
+  color: var(--app-ink);
+  border-color: var(--app-ink-3);
+}
+
+.btn.primary {
+  background: var(--app-ink);
+  color: var(--app-bg);
+  border-color: var(--app-ink);
+  padding: 12px 22px;
+  font-weight: 500;
+  min-width: 150px;
+  justify-content: center;
+}
+
+.btn.primary:hover {
+  background: oklch(from var(--app-ink) calc(l + 0.06) c h);
+  color: var(--app-bg);
+}
+
+.btn.ghost {
+  background: transparent;
+}
+
+.btn .kbd {
+  background: oklch(1 0 0 / 0.1);
+  border-color: oklch(1 0 0 / 0.15);
+  color: inherit;
+}
+
+.btn:not(.primary) .kbd {
+  background: var(--app-bg);
+  border-color: var(--app-line);
+  color: var(--app-ink-3);
+}
+
+/* ───────── Sequence footer ───────── */
+.footer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--app-ink-3);
+}
+
+.seq {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.seq-node {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.seq-node .sq {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  background: var(--app-line);
+}
+
+.seq-node.session .sq {
+  background: var(--app-accent);
+}
+
+.seq-node.break .sq {
+  background: var(--app-break);
+}
+
+.seq-node.long .sq {
+  background: var(--app-long);
+}
+
+.seq-sep {
+  color: var(--app-ink-3);
+  opacity: 0.5;
+}
+
+/* Small helper — keep hidden elements in DOM for legacy tests */
+.keep-mounted {
+  display: none;
 }

@@ -7,7 +7,7 @@ describe("TimerDisplay", () => {
     renderWithProviders(<TimerDisplay />, { providers: ["timer"] });
     expect(document.querySelector("#time-left")).toHaveTextContent("25:00");
     expect(document.querySelector("#time-label h2")).toHaveTextContent(
-      "Session"
+      "Focus"
     );
   });
 });

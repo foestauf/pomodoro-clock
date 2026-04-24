@@ -1,116 +1,182 @@
-.progress-container {
+/* ───────── Ring + center time ───────── */
+.ring-holder {
   position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 10px 0 30px;
+  aspect-ratio: 1 / 1;
+  max-width: 520px;
   width: 100%;
-  min-height: 200px;
-  max-width: 300px;
+  margin: 0 auto;
 }
 
-.progress-container #time-left {
+.ring-holder svg.ring-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  transform: rotate(-90deg);
+}
+
+.ring-track {
+  fill: none;
+  stroke: var(--app-line-2);
+}
+
+.ring-prog {
+  fill: none;
+  stroke: var(--app-accent);
+  transition:
+    stroke-dashoffset 0.9s linear,
+    stroke 0.4s;
+}
+
+.ring-holder.mode-break .ring-prog {
+  stroke: var(--app-break);
+}
+
+.ring-holder.mode-long .ring-prog {
+  stroke: var(--app-long);
+}
+
+.tick {
+  stroke: var(--app-ink-3);
+}
+
+.tick-maj {
+  stroke: var(--app-ink-2);
+}
+
+.ring-center {
   position: absolute;
-  font-size: 2.2rem;
-  font-weight: bold;
-  z-index: 10;
-  color: var(--app-text);
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 0 16px;
 }
 
 #time-label {
-  margin-bottom: 10px;
-  color: var(--app-text);
+  margin: 0;
+}
+
+#time-label h2 {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-weight: 500;
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: var(--app-accent-soft);
+  color: var(--app-accent);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+#time-label h2::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: currentColor;
+}
+
+.App.is-running #time-label h2::before {
+  animation: badge-pulse 1.4s ease-in-out infinite;
+}
+
+.App.is-break #time-label h2 {
+  background: var(--app-break-soft);
+  color: var(--app-break);
+}
+
+.App.is-long #time-label h2 {
+  background: var(--app-long-soft);
+  color: var(--app-long);
+}
+
+@keyframes badge-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.6);
+    opacity: 0.6;
+  }
 }
 
 #time-left {
-  font-family: digital-clock, monospace, sans-serif;
-  font-size: 8rem;
+  font-family: var(--font-mono);
+  font-weight: 300;
+  font-size: clamp(64px, 12vw, 160px);
+  letter-spacing: -0.04em;
+  line-height: 0.9;
+  font-variant-numeric: tabular-nums;
+  color: var(--app-ink);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.02em;
 }
 
-/* Media queries */
-@media (max-width: 1024px) {
-  #time-left {
-    font-size: 6rem;
+/* JetBrains Mono's colon glyph sits low at display sizes, so we hide the
+   character and paint two dots via background-image radial-gradients on
+   the .sep box itself. Dot centers at 33% and 67% of the 0.7em cap-height
+   box, which lands them symmetrically around the digit cap-height midline. */
+#time-left .sep {
+  display: inline-block;
+  width: 0.3em;
+  height: 0.7em;
+  color: transparent;
+  background-image:
+    radial-gradient(
+      circle at 50% 33%,
+      color-mix(in oklch, var(--app-ink) 55%, transparent) 0 0.065em,
+      transparent 0.07em
+    ),
+    radial-gradient(
+      circle at 50% 67%,
+      color-mix(in oklch, var(--app-ink) 55%, transparent) 0 0.065em,
+      transparent 0.07em
+    );
+  background-repeat: no-repeat;
+  animation: sep-blink 1.05s infinite;
+}
+
+.App.is-paused #time-left .sep {
+  animation: none;
+  opacity: 0.35;
+}
+
+@keyframes sep-blink {
+  50% {
+    opacity: 0.1;
   }
 }
 
-@media (max-width: 768px) {
-  #time-left {
-    font-size: 5rem;
-  }
+.meta {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--app-ink-3);
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
 
-  .progress-container {
-    margin: 20px 0;
-    position: relative;
-    width: 100%;
-    max-width: 300px;
-    min-height: 200px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: visible;
-  }
-
-  #time-label {
-    margin-bottom: 10px;
-  }
+.meta b {
+  color: var(--app-ink-2);
+  font-weight: 500;
 }
 
 @media (max-width: 480px) {
   #time-label h2 {
-    font-size: 1.2rem;
-    margin: 5px 0;
+    font-size: 10px;
   }
 
-  .progress-container {
-    width: 100%;
-    max-width: 220px;
-    min-height: 180px;
-    margin: 5px auto 15px !important;
-    display: flex !important;
-    justify-content: center;
-    align-items: center;
-    overflow: visible;
-    position: relative;
-    z-index: 5;
-  }
-
-  .mobile-visible {
-    display: block !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-    position: relative !important;
-    z-index: 100 !important;
-    margin: 20px auto !important;
-    width: 100% !important;
-    max-width: 250px !important;
-    min-height: 200px !important;
-  }
-
-  .mobile-visible #time-left {
-    display: block !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-    position: absolute !important;
-    top: 50% !important;
-    left: 50% !important;
-    transform: translate(-50%, -50%) !important;
-    font-size: 2.5rem !important;
-    color: var(--app-text) !important;
-    z-index: 101 !important;
-  }
-}
-
-@media (max-width: 360px) {
-  .progress-container {
-    max-width: 200px;
-  }
-
-  .progress-container #time-left {
-    font-size: 1.8rem;
+  #time-left {
+    font-size: clamp(56px, 18vw, 96px);
   }
 }
