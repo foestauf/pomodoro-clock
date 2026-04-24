@@ -1,8 +1,3 @@
-@font-face {
-  font-family: "digital-clock";
-  src: local("digital-clock"), url("./assets/fonts/digital-7.ttf");
-}
-
 body {
   background: var(--app-bg);
   font-size: 20px;
