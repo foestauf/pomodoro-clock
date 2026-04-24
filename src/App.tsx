@@ -14,11 +14,11 @@ import {
 } from "./context/TimerContext";
 import { ThemeProvider } from "./context/ThemeContext";
 
-type SequenceNode = {
+interface SequenceNode {
   kind: "session" | "break" | "long";
   done: boolean;
   current: boolean;
-};
+}
 
 const buildSequence = (
   cycleSize: number,

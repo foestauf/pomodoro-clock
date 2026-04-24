@@ -48,7 +48,10 @@ const Ring: React.FC<{ progress: number }> = ({ progress }) => {
   }
 
   return (
-    <svg className="ring-svg" viewBox={`0 0 ${RING_SIZE} ${RING_SIZE}`}>
+    <svg
+      className="ring-svg"
+      viewBox={`0 0 ${String(RING_SIZE)} ${String(RING_SIZE)}`}
+    >
       <g>{ticks}</g>
       <circle
         cx={RING_SIZE / 2}
@@ -97,10 +100,21 @@ const TimerDisplay: React.FC = () => {
   const clock = clockify();
   const [mm, ss] = clock.split(":");
 
-  const endsAt = new Date(Date.now() + timer * 1000).toLocaleTimeString([], {
-    hour: "2-digit",
-    minute: "2-digit",
-  });
+  // Wall-clock "ends at" is an impure read; mirror it into state so render
+  // stays pure (react-hooks/purity). set-state-in-effect is intentional here
+  // — the effect exists solely to schedule wall-clock samples.
+  const [endsAt, setEndsAt] = React.useState<string>("");
+  React.useEffect(() => {
+    const next =
+      timerState === TimerState.Running
+        ? new Date(Date.now() + timer * 1000).toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit",
+          })
+        : "";
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- mirror external wall-clock into render state
+    setEndsAt(next);
+  }, [timer, timerState]);
 
   return (
     <div className={`ring-holder ${modeClass(timerType)}`}>
