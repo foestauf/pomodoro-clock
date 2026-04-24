@@ -39,5 +39,21 @@ export default tseslint.config(
         allowDefaultProject: true,
       },
     },
+  },
+  // Test files: relax rules that conflict with common test ergonomics
+  // (non-null assertions on querySelector, mock.fn empty bodies).
+  {
+    files: [
+      "**/*.test.ts",
+      "**/*.test.tsx",
+      "**/test-utils.tsx",
+      "vitest.setup.ts",
+    ],
+    rules: {
+      "@typescript-eslint/no-non-null-assertion": "off",
+      "@typescript-eslint/no-empty-function": "off",
+      "@typescript-eslint/no-unsafe-assignment": "off",
+      "@typescript-eslint/no-unsafe-member-access": "off",
+    },
   }
 );

@@ -207,7 +207,7 @@ export function TimerProvider({ children }: { children: ReactNode }) {
           return newValue;
         });
       }, 1000);
-      intervalID.current = countdown as unknown as number;
+      intervalID.current = countdown;
       setTimerState(TimerState.Running);
       // Only start analytics session if timer is for a work session
       if (timerType === TimerType.Session) {
