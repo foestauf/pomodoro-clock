@@ -15,7 +15,7 @@ test.beforeEach(async ({ page }) => {
 
 test("loads the app with the default 25:00 session timer", async ({ page }) => {
   await expect(page.locator("#time-left")).toHaveText("25:00");
-  await expect(page.locator("#time-label h2")).toHaveText("Session");
+  await expect(page.locator("#time-label h2")).toHaveText("Focus");
   await expect(page.locator("#session-length")).toHaveText("25");
   await expect(page.locator("#break-length")).toHaveText("5");
 });

@@ -84,7 +84,7 @@ describe("timer integration", () => {
 
     expect(document.querySelector("#time-left")).toHaveTextContent("25:00");
     expect(document.querySelector("#time-label h2")).toHaveTextContent(
-      "Session"
+      "Focus"
     );
   });
 });
@@ -128,7 +128,7 @@ describe("keyboard shortcuts integration", () => {
 
     expect(document.querySelector("#time-left")).toHaveTextContent("25:00");
     expect(document.querySelector("#time-label h2")).toHaveTextContent(
-      "Session"
+      "Focus"
     );
   });
 
@@ -137,7 +137,9 @@ describe("keyboard shortcuts integration", () => {
 
     press("b");
 
-    expect(document.querySelector("#time-label h2")).toHaveTextContent("Break");
+    expect(document.querySelector("#time-label h2")).toHaveTextContent(
+      "Short Break"
+    );
     expect(document.querySelector("#time-left")).toHaveTextContent("05:00");
   });
 
@@ -148,7 +150,7 @@ describe("keyboard shortcuts integration", () => {
     press("s");
 
     expect(document.querySelector("#time-label h2")).toHaveTextContent(
-      "Session"
+      "Focus"
     );
     expect(document.querySelector("#time-left")).toHaveTextContent("25:00");
   });
