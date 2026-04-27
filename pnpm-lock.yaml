@@ -89,7 +89,7 @@ importers:
         version: 0.5.2(eslint@10.2.1(jiti@2.6.1))
       jsdom:
         specifier: ^29.0.2
-        version: 29.0.2
+        version: 29.1.0
       tailwindcss:
         specifier: ^4.1.2
         version: 4.2.4
@@ -107,7 +107,7 @@ importers:
         version: 1.6.0(@babel/core@7.29.0)(vite@8.0.10(@types/node@24.12.2)(jiti@2.6.1))
       vitest:
         specifier: ^4.1.5
-        version: 4.1.5(@types/node@24.12.2)(@vitest/ui@4.1.5)(jsdom@29.0.2)(vite@8.0.10(@types/node@24.12.2)(jiti@2.6.1))
+        version: 4.1.5(@types/node@24.12.2)(@vitest/ui@4.1.5)(jsdom@29.1.0)(vite@8.0.10(@types/node@24.12.2)(jiti@2.6.1))
 
 packages:
 
@@ -1473,8 +1473,8 @@ packages:
   js-tokens@4.0.0:
     resolution: {integrity: sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==}
 
-  jsdom@29.0.2:
-    resolution: {integrity: sha512-9VnGEBosc/ZpwyOsJBCQ/3I5p7Q5ngOY14a9bf5btenAORmZfDse1ZEheMiWcJ3h81+Fv7HmJFdS0szo/waF2w==}
+  jsdom@29.1.0:
+    resolution: {integrity: sha512-YNUc7fB9QuvSSQWfrH0xF+TyABkxUwx8sswgIDaCrw4Hol8BghdZDkITtZheRJeMtzWlnTfsM3bBBusRvpO1wg==}
     engines: {node: ^20.19.0 || ^22.13.0 || >=24.0.0}
     peerDependencies:
       canvas: ^3.0.0
@@ -2870,7 +2870,7 @@ snapshots:
       sirv: 3.0.2
       tinyglobby: 0.2.16
       tinyrainbow: 3.1.0
-      vitest: 4.1.5(@types/node@24.12.2)(@vitest/ui@4.1.5)(jsdom@29.0.2)(vite@8.0.10(@types/node@24.12.2)(jiti@2.6.1))
+      vitest: 4.1.5(@types/node@24.12.2)(@vitest/ui@4.1.5)(jsdom@29.1.0)(vite@8.0.10(@types/node@24.12.2)(jiti@2.6.1))
 
   '@vitest/utils@4.1.5':
     dependencies:
@@ -3786,7 +3786,7 @@ snapshots:
 
   js-tokens@4.0.0: {}
 
-  jsdom@29.0.2:
+  jsdom@29.1.0:
     dependencies:
       '@asamuzakjp/css-color': 5.1.11
       '@asamuzakjp/dom-selector': 7.1.1
@@ -4425,7 +4425,7 @@ snapshots:
       fsevents: 2.3.3
       jiti: 2.6.1
 
-  vitest@4.1.5(@types/node@24.12.2)(@vitest/ui@4.1.5)(jsdom@29.0.2)(vite@8.0.10(@types/node@24.12.2)(jiti@2.6.1)):
+  vitest@4.1.5(@types/node@24.12.2)(@vitest/ui@4.1.5)(jsdom@29.1.0)(vite@8.0.10(@types/node@24.12.2)(jiti@2.6.1)):
     dependencies:
       '@vitest/expect': 4.1.5
       '@vitest/mocker': 4.1.5(vite@8.0.10(@types/node@24.12.2)(jiti@2.6.1))
@@ -4450,7 +4450,7 @@ snapshots:
     optionalDependencies:
       '@types/node': 24.12.2
       '@vitest/ui': 4.1.5(vitest@4.1.5)
-      jsdom: 29.0.2
+      jsdom: 29.1.0
     transitivePeerDependencies:
       - msw
 
