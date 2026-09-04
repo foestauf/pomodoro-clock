@@ -112,7 +112,7 @@ const TimerDisplay: React.FC = () => {
             minute: "2-digit",
           })
         : "";
-    // eslint-disable-next-line react-hooks/set-state-in-effect -- mirror external wall-clock into render state
+    // oxlint-disable-next-line react/set-state-in-effect -- mirror external wall-clock into render state
     setEndsAt(next);
   }, [timer, timerState]);
 
