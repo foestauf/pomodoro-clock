@@ -110,7 +110,7 @@ export function TimerProvider({ children }: { children: ReactNode }) {
         clearInterval(intervalID.current);
       }
       intervalID.current = null;
-      // eslint-disable-next-line react-hooks/set-state-in-effect -- Intentional: handling timer completion requires state transition
+      // oxlint-disable-next-line react/set-state-in-effect -- Intentional: handling timer completion requires state transition
       setTimerState(TimerState.Stopped);
 
       // Handle the promise returned by play() method
@@ -156,7 +156,7 @@ export function TimerProvider({ children }: { children: ReactNode }) {
   // Update timer when session length changes
   useEffect(() => {
     if (timerType === TimerType.Session) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect -- Intentional: sync timer with session length changes
+      // oxlint-disable-next-line react/set-state-in-effect -- Intentional: sync timer with session length changes
       setTimer(sessionLength * 60);
     }
   }, [sessionLength, timerType]);
